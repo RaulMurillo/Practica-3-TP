@@ -1,5 +1,7 @@
 package tp.pr3.control;
 
+import java.io.*;
+
 import tp.pr3.logica.*;
 
 /**
@@ -25,8 +27,11 @@ public abstract class Comando {
 	 * @param cadenaComando
 	 *            Array de Strings con los comandos a parsear.
 	 * @return Comando correspondiente.
+	 * @throws ErrorDeInicializacion
+	 * @throws NumberFormatException
 	 */
-	public abstract Comando parsea(String[] cadenaComando);
+	public abstract Comando parsea(String[] cadenaComando) throws NumberFormatException, ErrorDeInicializacion,
+			FileNotFoundException, IOException, IndicesFueraDeRango, PalabraIncorrecta;
 
 	/**
 	 * Genera un String con la informacion de ayuda que se quiera mostrar sobre

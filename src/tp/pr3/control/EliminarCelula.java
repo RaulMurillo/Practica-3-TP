@@ -58,7 +58,7 @@ public class EliminarCelula extends Comando {
 	 * @return Comando EliminarCelula si el array de strings se corresponde con
 	 *         este, null en otro caso.
 	 */
-	public Comando parsea(String[] cadenaComando) {
+	public Comando parsea(String[] cadenaComando) throws NumberFormatException, IndicesFueraDeRango {
 		if (cadenaComando.length != 3)
 			return null;
 		else if (!cadenaComando[0].equals(ELIMINARCELULA))
@@ -66,12 +66,8 @@ public class EliminarCelula extends Comando {
 		else {
 			// Se gestionan errores tipo "eliminarcelula a 8"
 			int f, c;
-			try {
-				f = Integer.parseInt(cadenaComando[1]);
-				c = Integer.parseInt(cadenaComando[2]);
-			} catch (NumberFormatException e) { // Gestion de errores
-				return null;
-			}
+			f = Integer.parseInt(cadenaComando[1]);
+			c = Integer.parseInt(cadenaComando[2]);
 			return new EliminarCelula(f, c);
 		}
 	}

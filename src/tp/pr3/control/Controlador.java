@@ -2,6 +2,7 @@ package tp.pr3.control;
 
 import tp.pr3.logica.*;
 
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -48,7 +49,22 @@ public class Controlador {
 			 */
 			cadena = cadena.toUpperCase();
 			String[] array = cadena.split("\\s+");
-			Comando comando = ParserComandos.parseaComando(array);
+			try{
+				Comando comando = ParserComandos.parseaComando(array);
+			}
+			catch (NumberFormatException e){
+				throw new FormatoNumericoIncorrecto(); 
+			}catch (ErrorDeInicializacion f){
+				
+			}catch (IndicesFueraDeRango g){
+				 
+			}catch (PalabraIncorrecta h){
+				
+			}catch (FileNotFoundException k){
+				throw new ArchivoNoEncontrado();
+			}catch (IOException l){
+				
+			}
 			if (comando != null) {
 				comando.ejecuta(this);
 			} else

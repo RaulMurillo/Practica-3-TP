@@ -92,33 +92,28 @@ public class Jugar extends Comando {
 	 * @return Comando Iniciar si el array de strings se corresponde con este,
 	 *         null en otro caso.
 	 */
-	public Comando parsea(String[] cadenaComando) {
+	public Comando parsea(String[] cadenaComando) throws NumberFormatException, ErrorDeInicializacion {
 		if (cadenaComando[0].equals(JUGAR)) {
 			if (cadenaComando.length == 5 && cadenaComando[1].equals("SIMPLE")) {
 				int n, m, s;
-				try {
-					n = Integer.parseInt(cadenaComando[2]);
-					m = Integer.parseInt(cadenaComando[3]);
-					s = Integer.parseInt(cadenaComando[4]);
-				} catch (NumberFormatException e) { // Gestion de errores
-					return null;
-				}
+				n = Integer.parseInt(cadenaComando[2]);
+				m = Integer.parseInt(cadenaComando[3]);
+				s = Integer.parseInt(cadenaComando[4]);
+				if (s > n * m)
+					throw new ErrorDeInicializacion();
 				return new Jugar(n, m, s);
 			} else if (cadenaComando.length == 6 && cadenaComando[1].equals("COMPLEJO")) {
 				int n, m, s, c;
-				try {
-					n = Integer.parseInt(cadenaComando[2]);
-					m = Integer.parseInt(cadenaComando[3]);
-					s = Integer.parseInt(cadenaComando[4]);
-					c = Integer.parseInt(cadenaComando[5]);
-				} catch (NumberFormatException e) { // Gestion de errores
-					return null;
-				}
+				n = Integer.parseInt(cadenaComando[2]);
+				m = Integer.parseInt(cadenaComando[3]);
+				s = Integer.parseInt(cadenaComando[4]);
+				c = Integer.parseInt(cadenaComando[5]);
+				if (s + c > n * m)
+					throw new ErrorDeInicializacion();
 				return new Jugar(n, m, s, c);
 			} else
 				return null;
 		} else
 			return null;
 	}
-
 }

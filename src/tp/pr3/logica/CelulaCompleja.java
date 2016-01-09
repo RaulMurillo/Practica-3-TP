@@ -40,20 +40,7 @@ public class CelulaCompleja extends Celula {
 	 */
 	public Casilla ejecutaMovimiento(int f, int c, Superficie superficie) {
 		Casilla origen = new Casilla(f, c);
-		int filas = superficie.getFilas();
-		int columnas = superficie.getColumnas();
-		int aleatorio = (int) (Math.random() * filas * columnas - 1);
-		if (aleatorio >= origen.getX() * columnas + origen.getY())
-			aleatorio++; /*
-							 * En caso de que la casilla aleatoria este por
-							 * delante o sea la casilla donde se encuentra la
-							 * celula a mover, se suma uno, para corregir la
-							 * posicion.
-							 */
-		Casilla destino = new Casilla(aleatorio / columnas, aleatorio % columnas);
-		// En la casilla destino hay una celula compleja
-		if (!superficie.vacia(destino) && !superficie.esComestible(destino))
-			destino = null;
+		Casilla destino = casillaLibre(origen, superficie);
 		if (destino != null) {
 			System.out.print("Celula compleja en " + origen + " se mueve" + " a " + destino);
 			if (!superficie.vacia(destino)) {
@@ -89,5 +76,29 @@ public class CelulaCompleja extends Celula {
 	 */
 	public String toString() {
 		return "*";
+	}
+	
+	/**
+	 * Devuelve una casilla de destino para moverse
+	 * @param origen
+	 * @param superficie
+	 * @return casilla de destino, null si no puede moverse.
+	 */
+	private Casilla casillaLibre (Casilla origen, Superficie superficie){
+		int filas = superficie.getFilas();
+		int columnas = superficie.getColumnas();
+		int aleatorio = (int) (Math.random() * filas * columnas - 1);
+		if (aleatorio >= origen.getX() * columnas + origen.getY())
+			aleatorio++; /*
+							 * En caso de que la casilla aleatoria este por
+							 * delante o sea la casilla donde se encuentra la
+							 * celula a mover, se suma uno, para corregir la
+							 * posicion.
+							 */
+		Casilla destino = new Casilla(aleatorio / columnas, aleatorio % columnas);
+		// En la casilla destino hay una celula compleja
+		if (!superficie.vacia(destino) && !superficie.esComestible(destino))
+			destino = null;
+		return destino;
 	}
 }

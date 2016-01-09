@@ -73,35 +73,7 @@ public class CelulaSimple extends Celula {
 	 */
 	public Casilla ejecutaMovimiento(int f, int c, Superficie superficie) {
 		Casilla origen = new Casilla(f, c);
-		int filas = superficie.getFilas();
-		int columnas = superficie.getColumnas();
-		Casilla destino = null;
-		Casilla[] libres = new Casilla[filas * columnas - 1];
-		int cont = 0;
-		int i = origen.getX() - 1;
-		int j = origen.getY() - 1;
-		int p;
-		if (i < 0)
-			i = 0;
-		if (j < 0)
-			j = 0;
-		// Genera el array de casillas libres posibles.
-		while (i < filas && i <= origen.getX() + 1) {
-			p = j;
-			while (p < columnas && p <= origen.getY() + 1) {
-				Casilla aux = new Casilla(i, p);
-				if (superficie.vacia(aux)) {
-					libres[cont] = new Casilla(i, p);
-					cont++;
-				}
-				p++;
-			}
-			i++;
-		}
-		if (cont != 0) {
-			int aleatorio = (int) (Math.random() * cont);
-			destino = new Casilla(libres[aleatorio].getX(), libres[aleatorio].getY());
-		}
+		Casilla destino = casillaLibre(origen, superficie);
 		if (destino == null) { // No se puede mover
 			// Le toca reproducirse.
 			if (incPasDad()) {
@@ -134,5 +106,43 @@ public class CelulaSimple extends Celula {
 	 */
 	public boolean esComestible() {
 		return esComestible;
+	}
+	/**
+	 * Devuelve una casilla de destino para moverse
+	 * @param origen
+	 * @param superficie
+	 * @return casilla de destino, null si no puede moverse.
+	 */
+	private Casilla casillaLibre (Casilla origen, Superficie superficie){
+		int filas = superficie.getFilas();
+		int columnas = superficie.getColumnas();
+		Casilla destino = null;
+		Casilla[] libres = new Casilla[filas * columnas - 1];
+		int cont = 0;
+		int i = origen.getX() - 1;
+		int j = origen.getY() - 1;
+		int p;
+		if (i < 0)
+			i = 0;
+		if (j < 0)
+			j = 0;
+		// Genera el array de casillas libres posibles.
+		while (i < filas && i <= origen.getX() + 1) {
+			p = j;
+			while (p < columnas && p <= origen.getY() + 1) {
+				Casilla aux = new Casilla(i, p);
+				if (superficie.vacia(aux)) {
+					libres[cont] = new Casilla(i, p);
+					cont++;
+				}
+				p++;
+			}
+			i++;
+		}
+		if (cont != 0) {
+			int aleatorio = (int) (Math.random() * cont);
+			destino = new Casilla(libres[aleatorio].getX(), libres[aleatorio].getY());
+		}
+		return destino;
 	}
 }
