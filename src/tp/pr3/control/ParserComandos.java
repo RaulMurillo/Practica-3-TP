@@ -13,7 +13,7 @@ package tp.pr3.control;
 public class ParserComandos {
 	// Array con todos los comandos
 	private static Comando[] comandos = { new Paso(), new EliminarCelula(0, 0), new CrearCelulaSimple(0, 0),
-			new CrearCelulaCompleja(0, 0), new Iniciar(), new Vaciar(), new Salir(), new Ayuda() };
+			new CrearCelula(0, 0), new Iniciar(), new Vaciar(), new Salir(), new Ayuda() };
 
 	/**
 	 * Genera un String con el texto de ayuda que se muestra al seleccionar el

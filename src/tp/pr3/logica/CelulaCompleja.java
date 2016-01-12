@@ -9,7 +9,7 @@ package tp.pr3.logica;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class CelulaCompleja extends Celula {
+public class CelulaCompleja implements Celula {
 	public final int MAX_COMER = 2;
 	private int comidas;
 
@@ -17,7 +17,6 @@ public class CelulaCompleja extends Celula {
 	 * Crea una celula compleja.
 	 */
 	public CelulaCompleja() {
-		esComestible = false;
 		comidas = 0;
 	}
 
@@ -65,9 +64,9 @@ public class CelulaCompleja extends Celula {
 	 * 
 	 * @return false
 	 */
-	public boolean esComestible() {
+	/*public boolean esComestible() {
 		return esComestible;
-	}
+	}*/
 
 	/**
 	 * Muestra una celula compleja.

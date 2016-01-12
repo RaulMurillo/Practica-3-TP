@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.*;
-
 /**
  * Clase que implementa el comando crear celula compleja con atributos f, c para
  * indicar en que casilla se creara.
@@ -10,8 +8,8 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class CrearCelulaCompleja extends Comando {
-	public final String CREARCELULACOMPLEJA = "CREARCELULACOMPLEJA";
+public class CrearCelula implements Comando {
+	public final String CREARCELULA = "CREARCELULA";
 	private int f;
 	private int c;
 
@@ -23,7 +21,7 @@ public class CrearCelulaCompleja extends Comando {
 	 * @param columna
 	 *            Coordenada Y.
 	 */
-	public CrearCelulaCompleja(int fila, int columna) {
+	public CrearCelula(int fila, int columna) {
 		f = fila;
 		c = columna;
 	}
@@ -35,10 +33,8 @@ public class CrearCelulaCompleja extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		if (!mundo.crearCelulaCompleja(f, c)) {
-			System.out.println("No se pudo crear la celula, " + "posición no válida");
-		}
+	public void ejecuta(Controlador controlador) {
+		controlador.creaCelula(f, c);
 	}
 
 	/**
@@ -61,7 +57,7 @@ public class CrearCelulaCompleja extends Comando {
 	public Comando parsea(String[] cadenaComando) {
 		if (cadenaComando.length != 3)
 			return null;
-		else if (!cadenaComando[0].equals(CREARCELULACOMPLEJA))
+		else if (!cadenaComando[0].equals(CREARCELULA))
 			return null;
 		else {
 			// Se gestionan errores tipo "crearcelula a 8"
@@ -72,7 +68,7 @@ public class CrearCelulaCompleja extends Comando {
 			} catch (NumberFormatException e) { // Gestion de errores
 				return null;
 			}
-			return new CrearCelulaCompleja(f, c);
+			return new CrearCelula(f, c);
 		}
 	}
 }

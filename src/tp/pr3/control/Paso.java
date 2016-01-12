@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.*;
-
 /**
  * Clase que implementa el comando paso
  * 
@@ -9,7 +7,7 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Paso extends Comando {
+public class Paso implements Comando {
 	public final String PASO = "PASO";
 
 	/**
@@ -18,8 +16,8 @@ public class Paso extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		mundo.evoluciona();
+	public void ejecuta(Controlador controlador) {
+		controlador.daUnPaso();
 	}
 
 	/**

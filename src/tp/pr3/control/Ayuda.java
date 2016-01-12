@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.*;
-
 /**
  * Clase que implementa el comando ayuda.
  * 
@@ -9,7 +7,7 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Ayuda extends Comando {
+public class Ayuda implements Comando {
 	public final String AYUDA = "AYUDA";
 
 	/**
@@ -18,8 +16,8 @@ public class Ayuda extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		System.out.print(ParserComandos.AyudaComandos());
+	public void ejecuta(Controlador controlador) {
+		controlador.muestraAyuda();
 	}
 
 	/**

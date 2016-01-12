@@ -49,21 +49,20 @@ public class Controlador {
 			 */
 			cadena = cadena.toUpperCase();
 			String[] array = cadena.split("\\s+");
-			try{
+			try {
 				Comando comando = ParserComandos.parseaComando(array);
-			}
-			catch (NumberFormatException e){
-				throw new FormatoNumericoIncorrecto(); 
-			}catch (ErrorDeInicializacion f){
-				
-			}catch (IndicesFueraDeRango g){
-				 
-			}catch (PalabraIncorrecta h){
-				
-			}catch (FileNotFoundException k){
+			} catch (NumberFormatException e) {
+				throw new FormatoNumericoIncorrecto();
+			} catch (ErrorDeInicializacion f) {
+
+			} catch (IndicesFueraDeRango g) {
+
+			} catch (PalabraIncorrecta h) {
+
+			} catch (FileNotFoundException k) {
 				throw new ArchivoNoEncontrado();
-			}catch (IOException l){
-				
+			} catch (IOException l) {
+
 			}
 			if (comando != null) {
 				comando.ejecuta(this);
@@ -96,4 +95,66 @@ public class Controlador {
 		this.simulacionTerminada = true;
 	}
 
+	public void muestraAyuda() {
+		System.out.print(ParserComandos.AyudaComandos());
+	}
+
+	public void creaCelula(int f, int c){
+		Casilla casilla = new Casilla(f, c);
+		if(this.mundo instanceof MundoComplejo){
+			System.out.print("De que tipo: Compleja (1) o Simple (2): ");
+			int tipo;
+			try {
+				tipo = in.nextInt();
+			}catch(NumberFormatException e){
+				throw new FormatoNumericoIncorrecto();
+			}catch(IndicesFueraDeRango2 f){
+				...
+			}
+			if(tipo == 1){
+				if (!((MundoComplejo) mundo).crearCelulaCompleja(casilla)){
+					System.out.println("No se pudo crear la celula, " + "posición no válida");
+				}
+			}
+			else
+				if (!((MundoComplejo) mundo).crearCelulaSimple(casilla)){
+					System.out.println("No se pudo crear la celula, " + "posición no válida");
+				}
+		}
+		//El mundo es simple o la célula a crear lo es
+		else{
+			if (!mundo.crearCelulaSimple(casilla)) {
+				System.out.println("No se pudo crear la celula, " + "posición no válida");
+			}
+		}
+			
+			
+		
+	}
+
+	public void eliminaCelula(int f, int c) {
+		if (!mundo.eliminarCelula(f, c)) {
+			System.out.println("No se pudo eliminar la celula, " + "posicion no valida");
+		}
+	}
+
+	public void inicia() {
+		mundo.inicializaMundo();
+	}
+
+	public void juega(Mundo mundo) {
+		this.mundo = mundo;
+	}
+
+	public void daUnPaso() {
+		mundo.evoluciona();
+	}
+
+	public void sal() {
+		this.simulacionTerminada = true;
+	}
+
+	public void vacia() {
+		mundo.vaciarMundo();
+	}
 }

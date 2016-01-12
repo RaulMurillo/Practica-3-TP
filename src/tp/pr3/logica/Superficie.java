@@ -16,63 +16,17 @@ public class Superficie {
 	private int columnas; // Columnas de la matriz superficie.
 
 	/**
-	 * Crea una superficie a partir de su numero de filas y columnas y con un
-	 * varias celulas en posiciones aleatorias de la matriz.
+	 * Crea una superficie a partir de su numero de filas y columnas.
 	 * 
 	 * @param nf
 	 *            El numero de filas de la matriz. Debe ser mayor que 0.
 	 * @param nc
 	 *            El numero de columnas de la matriz. Debe ser mayor que 0.
-	 * @param numSimples
-	 *            El numero de celulas simples con las que se iniciara.
-	 * @param numComplejas
-	 *            El numero de celulas complejas con las que se iniciara.
 	 */
-	public Superficie(int nf, int nc, int numSimples, int numComplejas) {
+	public Superficie(int nf, int nc) {
 		this.filas = nf;
 		this.columnas = nc;
-		int aleatorio[] = new int[nf * nc];
-		/*
-		 * Se crea un array de enteros con numSimples celulas simples y
-		 * numComplejas celulas complejas, y se barajea aleatoriamente. El
-		 * resultado indicará la posición de las células iniciales de la
-		 * superficie.
-		 */
-		for (int i = 0; i < numSimples; i++) {
-			aleatorio[i] = 1;
-		}
-		for (int i = numSimples; i < numSimples + numComplejas; i++) {
-			aleatorio[i] = 2;
-		}
-		for (int i = numSimples + numComplejas; i < nf * nc; i++) {
-			aleatorio[i] = 0;
-		}
-		int aux;
-		int rnd;
-		int i = nf * nc;
-		/*
-		 * Utilizamos una variante del algoritmo de Fisher-Yates para conseguir
-		 * un barajado eficiente y sin desviaciones en las posibles
-		 * permutaciones (todas son asi equiprobables).
-		 * https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-		 */
-		while (i > 1) {
-			i--;
-			rnd = (int) (Math.random() * (i + 1));
-			aux = aleatorio[i];
-			aleatorio[i] = aleatorio[rnd];
-			aleatorio[rnd] = aux;
-		}
 		superficie = new Celula[nf][nc];
-		// Se crean células en las posiciones indicadas.
-		for (i = 0; i < nf * nc; i++) {
-			// Se entiende que la matriz no es vacía (0x0)
-			Casilla cas = new Casilla(i / nc, i % nc);
-			if (aleatorio[i] == 1)
-				crearCelulaSimple(cas);
-			else if (aleatorio[i] == 2)
-				crearCelulaCompleja(cas);
-		}
 	}
 
 	/**
@@ -202,7 +156,7 @@ public class Superficie {
 	 * @return true si la celula de la casilla es comestible.
 	 */
 	public boolean esComestible(Casilla casilla) {
-		return superficie[casilla.getX()][casilla.getY()].esComestible;
+		return superficie[casilla.getX()][casilla.getY()] instanceof CelulaSimple;
 	}
 
 	/**

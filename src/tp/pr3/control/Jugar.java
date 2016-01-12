@@ -9,7 +9,7 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Jugar extends Comando {
+public class Jugar implements Comando {
 	public final String JUGAR = "JUGAR";
 	private Mundo mundo;
 	private int n; // Numero de filas.
@@ -64,9 +64,8 @@ public class Jugar extends Comando {
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
 	public void ejecuta(Controlador controlador) {
-		/*
-		 * controlador.juega(this.mundo);
-		 */
+		controlador.juega(this.mundo);
+		
 	}
 
 	/**

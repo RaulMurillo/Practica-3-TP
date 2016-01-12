@@ -16,7 +16,8 @@ abstract public class Mundo {
 	protected int filas;
 	// nº de columnas de la superficie.
 	protected int columnas;
-
+	// nº de celulas simples iniciales de la superficie.
+	protected int numSimples;
 	// controla cuando termina la simulacion.
 	// private boolean simulacionTerminada;
 
@@ -37,7 +38,8 @@ abstract public class Mundo {
 	public Mundo(int filas, int columnas) {
 		this.filas = filas;
 		this.columnas = columnas;
-		inicializaMundo();
+		this.superficie = new Superficie(filas, columnas);
+		//inicializaMundo(); ???
 	}
 
 	/**
@@ -55,38 +57,9 @@ abstract public class Mundo {
 	 *            coordenada columna.
 	 * @return true si se ha creado la celula.
 	 */
-	public boolean crearCelulaSimple(int f, int c) {
-		if (!(f >= 0 && f < superficie.getFilas() && c >= 0 && c < superficie.getColumnas()))
-			return false;
-		else {
-			Casilla cas = new Casilla(f, c);
-			return superficie.crearCelulaSimple(cas);
-		}
+	public boolean crearCelulaSimple(Casilla cas) {
+		return superficie.crearCelulaSimple(cas);
 	}
-
-	/**
-	 * Dadas unas coordenadas, crea una celula compleja en dicha posicion de la
-	 * superficie.
-	 * 
-	 * @param f
-	 *            coordenada fila.
-	 * @param c
-	 *            coordenada columna.
-	 * @return true si se ha creado la celula.
-	 */
-	public boolean crearCelulaCompleja(int f, int c) {
-		if (!(f >= 0 && f < superficie.getFilas() && c >= 0 && c < superficie.getColumnas()))
-			return false;
-		else {
-			Casilla cas = new Casilla(f, c);
-			return superficie.crearCelulaCompleja(cas);
-		}
-	}
-
-	public abstract boolean crearCelula(int f, int c);
-	/*
-	 * 
-	 */
 
 	/**
 	 * Dadas unas coordenadas, elimina una celula en dicha posicion de la
@@ -139,24 +112,6 @@ abstract public class Mundo {
 	public String toString() {
 		return superficie.toString();
 	}
-
-	/**
-	 * Indica si la simulacion ha terminado.
-	 * 
-	 * @return true si la simulacion ha terminado.
-	 */
-	/*
-	 * public boolean getSimulacionTerminada() { return
-	 * this.simulacionTerminada; }
-	 */
-
-	/**
-	 * Cambia el valor del booleano de simulación a true.
-	 */
-	/*
-	 * public void setSimulacionTerminadaTrue() { this.simulacionTerminada =
-	 * true; }
-	 */
 
 	public abstract void guardar();
 

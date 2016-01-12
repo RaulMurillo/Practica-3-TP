@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.Mundo;
-
 /**
  * Clase que implementa el comando iniciar
  * 
@@ -9,7 +7,7 @@ import tp.pr3.logica.Mundo;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Iniciar extends Comando {
+public class Iniciar implements Comando {
 	public final String INICIAR = "INICIAR";
 
 	/**
@@ -18,8 +16,8 @@ public class Iniciar extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		mundo.inicializaMundo();
+	public void ejecuta(Controlador controlador) {
+		controlador.inicia();
 	}
 
 	/**

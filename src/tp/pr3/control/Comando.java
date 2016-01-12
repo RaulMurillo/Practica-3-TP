@@ -11,7 +11,7 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public abstract class Comando {
+interface Comando {
 	/**
 	 * Ejecuta el comando correspondiente sobre el mundo.
 	 * 

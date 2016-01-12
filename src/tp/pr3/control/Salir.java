@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.*;
-
 /**
  * Clase que implementa el comando SALIR.
  * 
@@ -9,7 +7,7 @@ import tp.pr3.logica.*;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Salir extends Comando {
+public class Salir implements Comando {
 	public final String SALIR = "SALIR";
 
 	/**
@@ -18,8 +16,8 @@ public class Salir extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		mundo.setSimulacionTerminadaTrue();
+	public void ejecuta(Controlador controlador) {
+		controlador.sal();
 	}
 
 	/**

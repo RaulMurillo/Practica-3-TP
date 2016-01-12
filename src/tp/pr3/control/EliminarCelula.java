@@ -1,7 +1,5 @@
 package tp.pr3.control;
 
-import tp.pr3.logica.Mundo;
-
 /**
  * Clase que implementa el comando eliminar celula con atributos f, c para
  * indicar de que casilla se eliminara.
@@ -10,7 +8,7 @@ import tp.pr3.logica.Mundo;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class EliminarCelula extends Comando {
+public class EliminarCelula implements Comando {
 	public final String ELIMINARCELULA = "ELIMINARCELULA";
 	private int f;
 	private int c;
@@ -35,10 +33,8 @@ public class EliminarCelula extends Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Mundo mundo) {
-		if (!mundo.eliminarCelula(f, c)) {
-			System.out.println("No se pudo eliminar la celula, " + "posicion no valida");
-		}
+	public void ejecuta(Controlador controlador) {
+		controlador.eliminaCelula(f, c);
 	}
 
 	/**

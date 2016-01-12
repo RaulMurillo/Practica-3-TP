@@ -1,7 +1,5 @@
 package tp.pr3.logica;
 
-import tp.pr3.logica.Casilla;
-
 /**
  * Esta clase representa una celula simple del mundo. Contiene atributos
  * privados para contabilizar el numero de pasos en los que la celula no se ha
@@ -13,7 +11,7 @@ import tp.pr3.logica.Casilla;
  * @author Antonio Valdivia de la Torre
  */
 
-public class CelulaSimple extends Celula {
+public class CelulaSimple implements Celula {
 	private int pasosDados; // Contador de pasos dados en el mundo.
 	private int pasosNoMovidos; // Contador de pasos sin moverse.
 	// Nº máximo de pasos que puede estar una célula sin moverse.
@@ -26,7 +24,6 @@ public class CelulaSimple extends Celula {
 	 * Crea una nueva celula simple, con todos sus contadores a 0.
 	 */
 	public CelulaSimple() {
-		esComestible = true;
 		pasosDados = 0;
 		pasosNoMovidos = 0;
 	}
@@ -99,14 +96,7 @@ public class CelulaSimple extends Celula {
 		return destino;
 	}
 
-	/**
-	 * Indica que la celula es simple.
-	 * 
-	 * @return true
-	 */
-	public boolean esComestible() {
-		return esComestible;
-	}
+	
 	/**
 	 * Devuelve una casilla de destino para moverse
 	 * @param origen
