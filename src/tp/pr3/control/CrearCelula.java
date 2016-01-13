@@ -33,7 +33,7 @@ public class CrearCelula implements Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Controlador controlador) {
+	public void ejecuta(Controlador controlador) throws PosicionNoValida, SeleccionNoValida {
 		controlador.creaCelula(f, c);
 	}
 
@@ -54,7 +54,7 @@ public class CrearCelula implements Comando {
 	 * @return Comando CrearCelulaCompleja si el array de strings se corresponde
 	 *         con este, null en otro caso.
 	 */
-	public Comando parsea(String[] cadenaComando) {
+	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto{
 		if (cadenaComando.length != 3)
 			return null;
 		else if (!cadenaComando[0].equals(CREARCELULA))
@@ -65,10 +65,18 @@ public class CrearCelula implements Comando {
 			try {
 				f = Integer.parseInt(cadenaComando[1]);
 				c = Integer.parseInt(cadenaComando[2]);
-			} catch (NumberFormatException e) { // Gestion de errores
-				return null;
+			} catch (NumberFormatException e) {
+				throw new FormatoNumericoIncorrecto();
 			}
 			return new CrearCelula(f, c);
 		}
+	}
+	
+	public int getFilas(){
+		return this.f;
+	}
+	
+	public int getColumnas(){
+		return this.c;
 	}
 }

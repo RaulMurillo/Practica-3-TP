@@ -12,10 +12,6 @@ import tp.pr3.logica.*;
 public class Jugar implements Comando {
 	public final String JUGAR = "JUGAR";
 	private Mundo mundo;
-	private int n; // Numero de filas.
-	private int m; // Numero de columnas.
-	private int s; // Numero de celulas simples.
-	private int c; // Numero de celulas complejas.
 
 	/**
 	 * Constructor simple de la clase. Inicializa el atributo mundo como uno
@@ -29,9 +25,6 @@ public class Jugar implements Comando {
 	 *            Numero de celulas simples.
 	 */
 	public Jugar(int n, int m, int s) {
-		this.n = n;
-		this.m = m;
-		this.s = s;
 		this.mundo = new MundoSimple(n, m, s);
 	}
 
@@ -49,10 +42,6 @@ public class Jugar implements Comando {
 	 *            Numero de celulas complejas.
 	 */
 	public Jugar(int n, int m, int s, int c) {
-		this.n = n;
-		this.m = m;
-		this.s = s;
-		this.c = c;
 		this.mundo = new MundoComplejo(n, m, s, c);
 	}
 
@@ -65,7 +54,6 @@ public class Jugar implements Comando {
 	 */
 	public void ejecuta(Controlador controlador) {
 		controlador.juega(this.mundo);
-		
 	}
 
 	/**
@@ -91,24 +79,32 @@ public class Jugar implements Comando {
 	 * @return Comando Iniciar si el array de strings se corresponde con este,
 	 *         null en otro caso.
 	 */
-	public Comando parsea(String[] cadenaComando) throws NumberFormatException, ErrorDeInicializacion {
+	public Comando parsea(String[] cadenaComando) throws ErrorDeInicializacion, FormatoNumericoIncorrecto {
 		if (cadenaComando[0].equals(JUGAR)) {
 			if (cadenaComando.length == 5 && cadenaComando[1].equals("SIMPLE")) {
 				int n, m, s;
-				n = Integer.parseInt(cadenaComando[2]);
-				m = Integer.parseInt(cadenaComando[3]);
-				s = Integer.parseInt(cadenaComando[4]);
-				if (s > n * m)
-					throw new ErrorDeInicializacion();
+				try {
+					n = Integer.parseInt(cadenaComando[2]);
+					m = Integer.parseInt(cadenaComando[3]);
+					s = Integer.parseInt(cadenaComando[4]);
+					if (s > n * m)
+						throw new ErrorDeInicializacion();
+				} catch (NumberFormatException e) {
+					throw new FormatoNumericoIncorrecto();
+				}
 				return new Jugar(n, m, s);
 			} else if (cadenaComando.length == 6 && cadenaComando[1].equals("COMPLEJO")) {
 				int n, m, s, c;
-				n = Integer.parseInt(cadenaComando[2]);
-				m = Integer.parseInt(cadenaComando[3]);
-				s = Integer.parseInt(cadenaComando[4]);
-				c = Integer.parseInt(cadenaComando[5]);
-				if (s + c > n * m)
-					throw new ErrorDeInicializacion();
+				try {
+					n = Integer.parseInt(cadenaComando[2]);
+					m = Integer.parseInt(cadenaComando[3]);
+					s = Integer.parseInt(cadenaComando[4]);
+					c = Integer.parseInt(cadenaComando[5]);
+					if (s + c > n * m)
+						throw new ErrorDeInicializacion();
+				} catch (NumberFormatException e) {
+					throw new FormatoNumericoIncorrecto();
+				}
 				return new Jugar(n, m, s, c);
 			} else
 				return null;

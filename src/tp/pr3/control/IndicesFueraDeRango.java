@@ -1,8 +1,8 @@
 package tp.pr3.control;
 
-public class IndicesFueraDeRango extends Exception{
+public class IndicesFueraDeRango extends Exception {
 
-	public IndicesFueraDeRango(){
-		super();
+	public IndicesFueraDeRango() {
+		super("No existe dicha posición de la superficie.");
 	}
 }

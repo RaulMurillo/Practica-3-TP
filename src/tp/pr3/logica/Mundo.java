@@ -1,5 +1,10 @@
 package tp.pr3.logica;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 /**
  * Esta clase contiene a la superficie. Tambien contiene constantes con la
  * dimension de la superficie y las celulas iniciales y un atributo que indica
@@ -39,7 +44,7 @@ abstract public class Mundo {
 		this.filas = filas;
 		this.columnas = columnas;
 		this.superficie = new Superficie(filas, columnas);
-		//inicializaMundo(); ???
+		// inicializaMundo(); ???
 	}
 
 	/**
@@ -113,12 +118,34 @@ abstract public class Mundo {
 		return superficie.toString();
 	}
 
-	public abstract void guardar();
-
-	public void cargar() {
-		/*
-		 * 
-		 */
+	public int getFilas() {
+		return this.filas;
 	}
+
+	public int getColumnas() {
+		return this.columnas;
+	}
+
+	// NO Se ha implementado como abstracto;
+	public void guardar(PrintWriter salida) {
+		if (this instanceof MundoSimple)
+			salida.println("simple");
+		else
+			salida.println("complejo");
+		salida.println(filas);
+		salida.println(columnas);
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				Casilla casilla = new Casilla(i, j);
+				if (!superficie.vacia(casilla)) {
+					salida.print(i + " " + j + " ");
+					superficie.guardar(salida, i, j);
+				}
+			}
+		}
+	}
+
+	// Se ha implementado como abstracto;
+	public abstract void cargar(BufferedReader entrada) throws PalabraIncorrecta;
 
 }

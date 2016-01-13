@@ -1,5 +1,8 @@
 package tp.pr3.control;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 /**
  * Esta clase es la encargada de parsear un array de String y construir el
  * comando al que hace referencia dicho String. Esta clase contiene un atributo
@@ -12,8 +15,8 @@ package tp.pr3.control;
  */
 public class ParserComandos {
 	// Array con todos los comandos
-	private static Comando[] comandos = { new Paso(), new EliminarCelula(0, 0), new CrearCelulaSimple(0, 0),
-			new CrearCelula(0, 0), new Iniciar(), new Vaciar(), new Salir(), new Ayuda() };
+	private static Comando[] comandos = { new Paso(), new EliminarCelula(0, 0), new CrearCelula(0, 0), new Iniciar(),
+			new Vaciar(), new Salir(), new Ayuda(), new Jugar(0, 0, 0, 0), new Cargar(""), new Guardar("") };
 
 	/**
 	 * Genera un String con el texto de ayuda que se muestra al seleccionar el
@@ -36,14 +39,23 @@ public class ParserComandos {
 	 *            Array de String a parsear.
 	 * @return Comando resultante de parsear el array de strings, o null en caso
 	 *         de que no se corresponda con ningun comando.
+	 * @throws PalabraIncorrecta
+	 * @throws IndicesFueraDeRango
+	 * @throws IOException
+	 * @throws ErrorDeInicializacion
+	 * @throws FileNotFoundException
+	 * @throws NumberFormatException
 	 */
-	static public Comando parseaComando(String[] cadenas) {
+	static public Comando parseaComando(String[] cadenas) throws FormatoNumericoIncorrecto, ErrorDeInicializacion,
+			IndicesFueraDeRango, PalabraIncorrecta, ComandoNoValido {
 		int i = 0;
 		Comando comando = null;
 		while (i < comandos.length && comando == null) {
 			comando = comandos[i].parsea(cadenas);
 			i++;
 		}
+		if (comando == null)
+			throw new ComandoNoValido();
 		return comando;
 	}
 }

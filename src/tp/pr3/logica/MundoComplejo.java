@@ -1,15 +1,19 @@
 package tp.pr3.logica;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 public class MundoComplejo extends Mundo {
 	// nº de células simples con las que se inicia la superficie.
 	private int numComplejas;
 
 	public MundoComplejo(int filas, int columnas, int numSimples, int numComplejas) {
-		
-		super(filas, columnas);	//ERROR
+		super(filas, columnas); // ERROR
 		this.numSimples = numSimples;
 		this.numComplejas = numComplejas;
-		inicializaMundo();//???
+		inicializaMundo();// ???
 
 	}
 
@@ -74,9 +78,39 @@ public class MundoComplejo extends Mundo {
 	}
 
 	@Override
-	public void guardar() {
-		// TODO Auto-generated method stub
-
+	public void cargar(BufferedReader entrada) throws PalabraIncorrecta {
+		String s;
+		try {
+			while ((s = entrada.readLine()) != null) {
+				String[] array = s.split("\\s+");
+				if (array.length == 5 && array[2].equals("simple")) {
+					int f = Integer.parseInt(array[0]);
+					int c = Integer.parseInt(array[1]);
+					int n = Integer.parseInt(array[3]);
+					int m = Integer.parseInt(array[4]);
+					if (f < 0 || f >= filas || c < 0 || c >= columnas) {
+						throw new PalabraIncorrecta();
+					}
+					superficie.cargar(f, c, n, m);
+				} else if (array.length == 4 && array[2].equals("compleja")) {
+					int f = Integer.parseInt(array[0]);
+					int c = Integer.parseInt(array[1]);
+					int n = Integer.parseInt(array[3]);
+					int m = -1;
+					
+					if (f < 0 || f >= filas || c < 0 || c >= columnas) {
+						throw new PalabraIncorrecta();
+					}
+					superficie.cargar(f, c, n, m);// m=-1
+				} else{
+					System.out.println("X");
+					throw new PalabraIncorrecta();
+				}
+			}
+		} catch (IOException e) {
+			throw new PalabraIncorrecta();
+		} catch (NumberFormatException e) {
+			throw new PalabraIncorrecta();
+		}
 	}
-
 }

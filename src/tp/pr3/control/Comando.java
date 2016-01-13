@@ -1,9 +1,5 @@
 package tp.pr3.control;
 
-import java.io.*;
-
-import tp.pr3.logica.*;
-
 /**
  * Clase abstracta de la que heredan todos los comandos de la practica.
  * 
@@ -18,7 +14,8 @@ interface Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public abstract void ejecuta(Controlador controlador);
+	public abstract void ejecuta(Controlador controlador)
+			throws PosicionNoValida, SeleccionNoValida, ArchivoIncorrecto, ArchivoNoEncontrado, PalabraIncorrecta;
 
 	/**
 	 * Recibe un array de String, que debe procesar devolviendo el comando que
@@ -30,8 +27,8 @@ interface Comando {
 	 * @throws ErrorDeInicializacion
 	 * @throws NumberFormatException
 	 */
-	public abstract Comando parsea(String[] cadenaComando) throws NumberFormatException, ErrorDeInicializacion,
-			FileNotFoundException, IOException, IndicesFueraDeRango, PalabraIncorrecta;
+	public abstract Comando parsea(String[] cadenaComando)
+			throws FormatoNumericoIncorrecto, ErrorDeInicializacion, PalabraIncorrecta;
 
 	/**
 	 * Genera un String con la informacion de ayuda que se quiera mostrar sobre

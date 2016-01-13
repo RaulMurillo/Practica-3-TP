@@ -1,4 +1,7 @@
 package tp.pr3.logica;
+import java.io.*;
+
+import tp.pr3.control.PalabraIncorrecta; 
 
 /**
  * Es una clase abstracta de la que heredan las clases concretas celula compleja
@@ -26,5 +29,9 @@ interface Celula {
 	public abstract Casilla ejecutaMovimiento(int f, int c, Superficie superficie);
 	
 	public abstract String toString();
+	
+	public abstract void guardar(PrintWriter salida);
+	
+	public abstract void cargar(int n, int m) throws PalabraIncorrecta;
 
 }

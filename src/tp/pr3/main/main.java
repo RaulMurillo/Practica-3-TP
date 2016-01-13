@@ -22,10 +22,9 @@ public class main {
 	 *            .
 	 */
 	public static void main(String[] args) {
-		Mundo mundo = new Mundo();
+		Mundo mundo = new MundoComplejo(3,3,2,1); //null;
 		Scanner in = new Scanner(System.in);
 		Controlador controlador = new Controlador(mundo, in);
 		controlador.realizarSimulacion();
-	}
-	
+	}	
 }

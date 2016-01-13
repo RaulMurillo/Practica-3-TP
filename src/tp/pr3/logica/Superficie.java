@@ -1,5 +1,9 @@
 package tp.pr3.logica;
 
+import java.io.PrintWriter;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 /**
  * Esta clase representa la superficie donde transcurre la evolucion de las
  * celulas. La superficie la vamos a representar mediante una matriz de celulas,
@@ -181,5 +185,18 @@ public class Superficie {
 	 */
 	public boolean vacia(Casilla casilla) {
 		return (superficie[casilla.getX()][casilla.getY()] == null);
+	}
+
+	public void guardar(PrintWriter salida, int i, int j) {
+		superficie[i][j].guardar(salida);
+	}
+
+	public void cargar(int i, int j, int n, int m) throws PalabraIncorrecta {
+		Casilla casilla = new Casilla(i, j);
+		if (m == -1)
+			crearCelulaCompleja(casilla);
+		else
+			crearCelulaSimple(casilla);
+		superficie[i][j].cargar(n, m);
 	}
 }

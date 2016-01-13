@@ -50,24 +50,30 @@ public class Controlador {
 			cadena = cadena.toUpperCase();
 			String[] array = cadena.split("\\s+");
 			try {
+				// if(mundo )
 				Comando comando = ParserComandos.parseaComando(array);
-			} catch (NumberFormatException e) {
-				throw new FormatoNumericoIncorrecto();
-			} catch (ErrorDeInicializacion f) {
-
-			} catch (IndicesFueraDeRango g) {
-
-			} catch (PalabraIncorrecta h) {
-
-			} catch (FileNotFoundException k) {
-				throw new ArchivoNoEncontrado();
-			} catch (IOException l) {
-
-			}
-			if (comando != null) {
+				this.fueraDeRango(comando);
 				comando.ejecuta(this);
-			} else
-				System.out.println("Comando no válido.");
+			} catch (FormatoNumericoIncorrecto e) {
+				System.out.println(e.getMessage());
+			} catch (ErrorDeInicializacion e) {
+				System.out.println(e.getMessage());
+			} catch (IndicesFueraDeRango e) {
+				System.out.println(e.getMessage());
+			} catch (PalabraIncorrecta e) {
+				System.out.println(e.getMessage());
+			} catch (ArchivoNoEncontrado e) {
+				System.out.println(e.getMessage());
+			} catch (ArchivoIncorrecto e) {
+				System.out.println(e.getMessage());
+			} catch (ComandoNoValido e) {
+				System.out.println(e.getMessage());
+			} catch (SeleccionNoValida e) {
+				System.out.println(e.getMessage());
+			} catch (PosicionNoValida e) {
+				System.out.println(e.getMessage());
+			}
+
 		} while (!simulacionTerminada); // El bucle termina cuando el
 										// usuario teclea el comando
 										// SALIR, que pone el
@@ -82,12 +88,6 @@ public class Controlador {
 		System.out.println(mundo);
 	}
 
-	public void cargar(String nombreFichero) {
-		/*
-		 * 
-		 */
-	}
-
 	/**
 	 * Cambia el valor del booleano de simulación a true.
 	 */
@@ -99,37 +99,32 @@ public class Controlador {
 		System.out.print(ParserComandos.AyudaComandos());
 	}
 
-	public void creaCelula(int f, int c){
+	public void creaCelula(int f, int c) throws PosicionNoValida, SeleccionNoValida {
 		Casilla casilla = new Casilla(f, c);
-		if(this.mundo instanceof MundoComplejo){
+		// Caso Mundo Complejo
+		if (this.mundo instanceof MundoComplejo) {
 			System.out.print("De que tipo: Compleja (1) o Simple (2): ");
-			int tipo;
-			try {
-				tipo = in.nextInt();
-			}catch(NumberFormatException e){
-				throw new FormatoNumericoIncorrecto();
-			}catch(IndicesFueraDeRango2 f){
-				...
-			}
-			if(tipo == 1){
-				if (!((MundoComplejo) mundo).crearCelulaCompleja(casilla)){
-					System.out.println("No se pudo crear la celula, " + "posición no válida");
+			String tipo;
+			tipo = in.nextLine();
+			// if (tipo != "1" && tipo != "2")
+			// throw new SeleccionNoValida();
+			if (tipo.equals("1")) {
+				if (!((MundoComplejo) mundo).crearCelulaCompleja(casilla)) {
+					throw new PosicionNoValida();
+				}
+			} else if (tipo.equals("2")) {
+				if (!((MundoComplejo) mundo).crearCelulaSimple(casilla)) {
+					throw new PosicionNoValida();
 				}
 			}
-			else
-				if (!((MundoComplejo) mundo).crearCelulaSimple(casilla)){
-					System.out.println("No se pudo crear la celula, " + "posición no válida");
-				}
+			else throw new SeleccionNoValida();
 		}
-		//El mundo es simple o la célula a crear lo es
-		else{
+		// El mundo es simple
+		else {
 			if (!mundo.crearCelulaSimple(casilla)) {
-				System.out.println("No se pudo crear la celula, " + "posición no válida");
+				throw new PosicionNoValida();
 			}
 		}
-			
-			
-		
 	}
 
 	public void eliminaCelula(int f, int c) {
@@ -139,6 +134,7 @@ public class Controlador {
 	}
 
 	public void inicia() {
+		mundo.vaciarMundo();
 		mundo.inicializaMundo();
 	}
 
@@ -156,5 +152,73 @@ public class Controlador {
 
 	public void vacia() {
 		mundo.vaciarMundo();
+	}
+
+	/**
+	 * En caso de que el comando requiera verificar el rango de los indices,
+	 * lanza una excepcion si dichos indices no se encuentran en el rango
+	 * establecido.
+	 * 
+	 * @param comando
+	 *            Sólo verifica los comandos CrearCelula y EliminarCelula
+	 * @throws IndicesFueraDeRango
+	 */
+	public void fueraDeRango(Comando comando) throws IndicesFueraDeRango {
+		if (comando instanceof CrearCelula) {
+			int filaComando = ((CrearCelula) comando).getFilas();
+			int columnaComando = ((CrearCelula) comando).getColumnas();
+			if (filaComando < 0 || filaComando >= mundo.getFilas() || columnaComando < 0
+					|| columnaComando >= mundo.getColumnas()) {
+				throw new IndicesFueraDeRango();
+			}
+		} else if (comando instanceof EliminarCelula) {
+			int filaComando = ((EliminarCelula) comando).getFilas();
+			int columnaComando = ((EliminarCelula) comando).getColumnas();
+			if (filaComando < 0 || filaComando >= mundo.getFilas() || columnaComando < 0
+					|| columnaComando >= mundo.getColumnas()) {
+				throw new IndicesFueraDeRango();
+			}
+		}
+	}
+
+	public void guarda(String nombreFichero) throws ArchivoIncorrecto {
+		// Escritura de datos
+		try {
+			PrintWriter salida = new PrintWriter(new BufferedWriter(new FileWriter(nombreFichero)));
+			mundo.guardar(salida);
+			salida.close();
+		} catch (IOException e) {
+			throw new ArchivoIncorrecto();
+		}
+	}
+
+	public void carga(String nombreFichero) throws ArchivoNoEncontrado, ArchivoIncorrecto, PalabraIncorrecta {
+		// Lectura datos
+		try {
+			BufferedReader entrada = new BufferedReader(new FileReader(nombreFichero));
+			String tipo = entrada.readLine();
+			int f, c;
+			f = Integer.parseInt(entrada.readLine());
+				c = Integer.parseInt(entrada.readLine());
+				if (f < 1 || c < 1) {
+					entrada.close();
+					throw new PalabraIncorrecta();
+				}
+			if (tipo.equals("simple")) {				
+				mundo = new MundoSimple(f, c, 0);
+				mundo.cargar(entrada);
+			}
+			else if (tipo.equals("complejo")) {
+				mundo = new MundoComplejo(f, c, 0, 0);
+				mundo.cargar(entrada);
+			}
+			entrada.close();
+		}catch (NumberFormatException e){
+			throw new PalabraIncorrecta();
+		} catch (FileNotFoundException e) {
+			throw new ArchivoNoEncontrado();
+		} catch (IOException e) {
+			throw new ArchivoIncorrecto();
+		}
 	}
 }

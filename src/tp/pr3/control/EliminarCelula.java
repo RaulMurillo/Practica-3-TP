@@ -33,7 +33,7 @@ public class EliminarCelula implements Comando {
 	 * @param mundo
 	 *            Mundo sobre el que se ejecuta el comando.
 	 */
-	public void ejecuta(Controlador controlador) {
+	public void ejecuta(Controlador controlador) throws PosicionNoValida{
 		controlador.eliminaCelula(f, c);
 	}
 
@@ -54,7 +54,7 @@ public class EliminarCelula implements Comando {
 	 * @return Comando EliminarCelula si el array de strings se corresponde con
 	 *         este, null en otro caso.
 	 */
-	public Comando parsea(String[] cadenaComando) throws NumberFormatException, IndicesFueraDeRango {
+	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto{
 		if (cadenaComando.length != 3)
 			return null;
 		else if (!cadenaComando[0].equals(ELIMINARCELULA))
@@ -62,9 +62,21 @@ public class EliminarCelula implements Comando {
 		else {
 			// Se gestionan errores tipo "eliminarcelula a 8"
 			int f, c;
+			try{
 			f = Integer.parseInt(cadenaComando[1]);
 			c = Integer.parseInt(cadenaComando[2]);
+			}catch(NumberFormatException e){
+				throw new FormatoNumericoIncorrecto();
+			}
 			return new EliminarCelula(f, c);
 		}
+	}
+	
+	public int getFilas(){
+		return this.f;
+	}
+	
+	public int getColumnas(){
+		return this.c;
 	}
 }

@@ -7,20 +7,35 @@ package tp.pr3.control;
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-public class Cargar extends Comando {
+public class Cargar implements Comando {
 	public final String CARGAR = "CARGAR";
 	private String nombreFichero; // Nombre del fichero a cargar.
 
-	@Override
-	public void ejecuta(Controlador controlador) {
-		// TODO Auto-generated method stub
-
+	public Cargar(String nombreFichero) {
+		this.nombreFichero = nombreFichero;
 	}
 
 	@Override
+	public void ejecuta(Controlador controlador) throws PalabraIncorrecta, ArchivoIncorrecto, ArchivoNoEncontrado {
+		controlador.carga(this.nombreFichero);
+
+	}
+
+	/**
+	 * Parsea un array de String para construir el comando que representa.
+	 * 
+	 * @param cadenaComando
+	 *            Array de String a parsear.
+	 * @return Comando Cargar si el array de strings se corresponde con este,
+	 *         null en otro caso.
+	 */
 	public Comando parsea(String[] cadenaComando) {
-		// TODO Auto-generated method stub
-		return null;
+		if (cadenaComando.length != 2)
+			return null;
+		else if (cadenaComando[0].equals(CARGAR))
+			return new Cargar(cadenaComando[1]);
+		else
+			return null;
 	}
 
 	/**
@@ -29,7 +44,7 @@ public class Cargar extends Comando {
 	 * @return Texto de ayuda correspondiente al comando.
 	 */
 	public String textoAyuda() {
-		return ("CARGAR NOMFIC: Carga como juego actual el almacenado en el fichero de texto NOMFICH");
+		return ("CARGAR NOMFIC: Carga como juego actual el almacenado" + " en el fichero de texto NOMFICH");
 	}
 
 }

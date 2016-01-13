@@ -1,9 +1,15 @@
 package tp.pr3.logica;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 public class MundoSimple extends Mundo {
 
 	public MundoSimple(int filas, int columnas, int numCelulas) {
 		super(filas, columnas);
+		this.numSimples = numCelulas;
 		inicializaMundo();
 	}
 
@@ -45,9 +51,27 @@ public class MundoSimple extends Mundo {
 	}
 
 	@Override
-	public void guardar() {
-		// TODO Auto-generated method stub
-
+	public void cargar(BufferedReader entrada) throws PalabraIncorrecta {
+		String s;
+		try {
+			while ((s = entrada.readLine()) != null) {
+				String[] array = s.split("\\s+");
+				if (array.length != 5 || !array[2].equals("simple"))
+					throw new PalabraIncorrecta();
+				// else
+				int f = Integer.parseInt(array[0]);
+				int c = Integer.parseInt(array[1]);
+				int n = Integer.parseInt(array[3]);
+				int m = Integer.parseInt(array[4]);
+				if (f < 0 || f >= filas || c < 0 || c >= columnas) {
+					throw new PalabraIncorrecta();
+				}
+				superficie.cargar(f, c, n, m);
+			}
+		} catch (IOException e) {
+			throw new PalabraIncorrecta();
+		} catch (NumberFormatException e) {
+			throw new PalabraIncorrecta();
+		}
 	}
-
 }

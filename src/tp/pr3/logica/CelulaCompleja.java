@@ -1,5 +1,9 @@
 package tp.pr3.logica;
 
+import java.io.PrintWriter;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 /**
  * Esta clase representa una celula compleja del mundo. Contiene un atributo
  * privado para contabilizar cuantas celulas se ha comido y una constante
@@ -60,15 +64,6 @@ public class CelulaCompleja implements Celula {
 	}
 
 	/**
-	 * Indica que la celula es compleja.
-	 * 
-	 * @return false
-	 */
-	/*public boolean esComestible() {
-		return esComestible;
-	}*/
-
-	/**
 	 * Muestra una celula compleja.
 	 * 
 	 * @return * (celula compleja)
@@ -76,14 +71,15 @@ public class CelulaCompleja implements Celula {
 	public String toString() {
 		return "*";
 	}
-	
+
 	/**
 	 * Devuelve una casilla de destino para moverse
+	 * 
 	 * @param origen
 	 * @param superficie
 	 * @return casilla de destino, null si no puede moverse.
 	 */
-	private Casilla casillaLibre (Casilla origen, Superficie superficie){
+	private Casilla casillaLibre(Casilla origen, Superficie superficie) {
 		int filas = superficie.getFilas();
 		int columnas = superficie.getColumnas();
 		int aleatorio = (int) (Math.random() * filas * columnas - 1);
@@ -100,4 +96,18 @@ public class CelulaCompleja implements Celula {
 			destino = null;
 		return destino;
 	}
+
+	@Override
+	public void guardar(PrintWriter salida) {
+		salida.println("compleja " + this.comidas);
+	}
+
+	@Override
+	public void cargar(int n, int m) throws PalabraIncorrecta {
+		comidas = n;
+		if (comidas < 0 || comidas >= MAX_COMER)
+			throw new PalabraIncorrecta();
+
+	}
+
 }

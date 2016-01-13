@@ -1,5 +1,9 @@
 package tp.pr3.logica;
 
+import java.io.PrintWriter;
+
+import tp.pr3.control.PalabraIncorrecta;
+
 /**
  * Esta clase representa una celula simple del mundo. Contiene atributos
  * privados para contabilizar el numero de pasos en los que la celula no se ha
@@ -96,14 +100,14 @@ public class CelulaSimple implements Celula {
 		return destino;
 	}
 
-	
 	/**
 	 * Devuelve una casilla de destino para moverse
+	 * 
 	 * @param origen
 	 * @param superficie
 	 * @return casilla de destino, null si no puede moverse.
 	 */
-	private Casilla casillaLibre (Casilla origen, Superficie superficie){
+	private Casilla casillaLibre(Casilla origen, Superficie superficie) {
 		int filas = superficie.getFilas();
 		int columnas = superficie.getColumnas();
 		Casilla destino = null;
@@ -134,5 +138,19 @@ public class CelulaSimple implements Celula {
 			destino = new Casilla(libres[aleatorio].getX(), libres[aleatorio].getY());
 		}
 		return destino;
+	}
+
+	@Override
+	public void guardar(PrintWriter salida) {
+		salida.println("simple " + this.pasosDados + " " + this.pasosNoMovidos);
+	}
+
+	@Override
+	public void cargar(int n, int m) throws PalabraIncorrecta {
+		pasosDados = n;
+		pasosNoMovidos = m;
+		if (pasosDados < 0 || pasosNoMovidos < 0 ||
+				pasosNoMovidos >= MAX_PASOS_SIN_MOVER)
+			throw new PalabraIncorrecta();
 	}
 }
