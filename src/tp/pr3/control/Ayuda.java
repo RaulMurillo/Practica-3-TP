@@ -1,42 +1,27 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando ayuda.
+ * Clase que implementa el comando AYUDA.
  * 
- * @version 1.1, 09/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Ayuda implements Comando {
+	// Identificador del comando
 	public final String AYUDA = "AYUDA";
 
-	/**
-	 * Metodo que ejecuta el comando ayuda mostrando las lineas de ayuda.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
+	@Override
 	public void ejecuta(Controlador controlador) {
 		controlador.muestraAyuda();
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a Ayuda.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("AYUDA: Muestra esta ayuda");
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando Ayuda si el array de strings se corresponde con este,
-	 *         null en otro caso.
-	 */
+	@Override
 	public Comando parsea(String[] cadenaComando) {
 		if (cadenaComando.length != 1)
 			return null;

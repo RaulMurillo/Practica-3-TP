@@ -39,12 +39,11 @@ public class ParserComandos {
 	 *            Array de String a parsear.
 	 * @return Comando resultante de parsear el array de strings, o null en caso
 	 *         de que no se corresponda con ningun comando.
-	 * @throws PalabraIncorrecta
-	 * @throws IndicesFueraDeRango
-	 * @throws IOException
+	 * @throws FormatoNumericoIncorrecto
 	 * @throws ErrorDeInicializacion
-	 * @throws FileNotFoundException
-	 * @throws NumberFormatException
+	 * @throws IndicesFueraDeRango
+	 * @throws PalabraIncorrecta
+	 * @throws ComandoNoValido
 	 */
 	static public Comando parseaComando(String[] cadenas) throws FormatoNumericoIncorrecto, ErrorDeInicializacion,
 			IndicesFueraDeRango, PalabraIncorrecta, ComandoNoValido {

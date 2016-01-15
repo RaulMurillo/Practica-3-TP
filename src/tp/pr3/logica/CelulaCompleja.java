@@ -1,46 +1,45 @@
 package tp.pr3.logica;
 
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import tp.pr3.control.PalabraIncorrecta;
 
 /**
- * Esta clase representa una celula compleja del mundo. Contiene un atributo
- * privado para contabilizar cuantas celulas se ha comido y una constante
- * publica para ver si se ha comido el maximo posible de celulas.
+ * Clase que especializa la clase Celula. Representa una celulas complejas del
+ * mundo. Contiene un atributo privado para contabilizar cuantas celulas se ha
+ * comido y una constante para saber si se ha comido el maximo posible de
+ * celulas.
  * 
- * @version 2.0, 11/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class CelulaCompleja implements Celula {
+	// Numero maximo de celulas que puede comer antes de morir.
 	public final int MAX_COMER = 2;
+	// Contador de celulas comidas.
 	private int comidas;
 
 	/**
-	 * Crea una celula compleja.
+	 * Constructor de la clase. Crea una celula compleja con su contador a 0.
 	 */
 	public CelulaCompleja() {
 		comidas = 0;
 	}
 
 	/**
-	 * Incrementa el contador de celulas comidas e indica si debe morir.
+	 * Incrementa el contador de celulas comidas e indica si la celula debe
+	 * morir.
 	 * 
-	 * @return true si se ha comido el máximo de celulas posibles.
+	 * @return true si se ha comido el maximo de celulas posibles.
 	 */
 	public boolean comidas() {
 		comidas++;
 		return comidas == MAX_COMER;
 	}
 
-	/**
-	 * Realiza el movimiento de una celula compleja colocada en la posicion
-	 * (f,c).
-	 * 
-	 * @return la casilla a la que se ha movido la celula, o null en caso de que
-	 *         no se mueva la celula.
-	 */
+	@Override
 	public Casilla ejecutaMovimiento(int f, int c, Superficie superficie) {
 		Casilla origen = new Casilla(f, c);
 		Casilla destino = casillaLibre(origen, superficie);
@@ -55,7 +54,7 @@ public class CelulaCompleja implements Celula {
 					System.out.println("Explota la celula compleja en " + destino);
 					superficie.eliminarCelula(destino);
 				}
-			} else { /* if (destino esta libre) */
+			} else { // if (destino esta libre)
 				superficie.moverA(origen, destino);
 				System.out.print(" --NO COME--" + '\n');
 			}
@@ -63,27 +62,17 @@ public class CelulaCompleja implements Celula {
 		return destino;
 	}
 
-	/**
-	 * Muestra una celula compleja.
-	 * 
-	 * @return * (celula compleja)
-	 */
+	@Override
 	public String toString() {
 		return "*";
 	}
 
-	/**
-	 * Devuelve una casilla de destino para moverse
-	 * 
-	 * @param origen
-	 * @param superficie
-	 * @return casilla de destino, null si no puede moverse.
-	 */
-	private Casilla casillaLibre(Casilla origen, Superficie superficie) {
+	@Override
+	public Casilla casillaLibre(Casilla origen, Superficie superficie) {
 		int filas = superficie.getFilas();
 		int columnas = superficie.getColumnas();
 		int aleatorio = (int) (Math.random() * filas * columnas - 1);
-		if (aleatorio >= origen.getX() * columnas + origen.getY())
+		if (aleatorio >= origen.getFila() * columnas + origen.getColumna())
 			aleatorio++; /*
 							 * En caso de que la casilla aleatoria este por
 							 * delante o sea la casilla donde se encuentra la
@@ -103,11 +92,14 @@ public class CelulaCompleja implements Celula {
 	}
 
 	@Override
-	public void cargar(int n, int m) throws PalabraIncorrecta {
-		comidas = n;
-		if (comidas < 0 || comidas >= MAX_COMER)
+	public void cargar(Scanner entrada) throws PalabraIncorrecta {
+		try {
+			comidas = Integer.parseInt(entrada.next());
+			if (comidas < 0 || comidas >= MAX_COMER)
+				throw new PalabraIncorrecta();
+		} catch (NumberFormatException e) {
 			throw new PalabraIncorrecta();
-
+		}
 	}
 
 }

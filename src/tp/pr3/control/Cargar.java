@@ -1,16 +1,25 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando Cargar.
+ * Clase que implementa el comando CARGAR.
  * 
- * @version 1.0, 18/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Cargar implements Comando {
+	// Identificador del comando
 	public final String CARGAR = "CARGAR";
-	private String nombreFichero; // Nombre del fichero a cargar.
+	// Nombre del fichero a cargar.
+	private String nombreFichero;
 
+	/**
+	 * Constructor de la clase. Asigna el nombre del fichero desde el que se
+	 * cargara la informacion de la partida.
+	 * 
+	 * @param nombreFichero
+	 *            Fichero desde el que se cargara la informacion de la partida.
+	 */
 	public Cargar(String nombreFichero) {
 		this.nombreFichero = nombreFichero;
 	}
@@ -21,14 +30,7 @@ public class Cargar implements Comando {
 
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando Cargar si el array de strings se corresponde con este,
-	 *         null en otro caso.
-	 */
+	@Override
 	public Comando parsea(String[] cadenaComando) {
 		if (cadenaComando.length != 2)
 			return null;
@@ -38,11 +40,7 @@ public class Cargar implements Comando {
 			return null;
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a Cargar.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("CARGAR NOMFIC: Carga como juego actual el almacenado" + " en el fichero de texto NOMFICH");
 	}

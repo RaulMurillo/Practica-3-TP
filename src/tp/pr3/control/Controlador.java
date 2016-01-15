@@ -3,24 +3,27 @@ package tp.pr3.control;
 import tp.pr3.logica.*;
 
 import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
- * Esta clase contiene el interprete de los posibles comandos que se pueden
+ * Clase que contiene el interprete de los posibles comandos que se pueden
  * ejecutar en consola.
  * 
- * @version 2.0, 09/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
-
 public class Controlador {
-	private Mundo mundo; // Mundo sobre el que ejecutar los comandos.
-	private Scanner in; // Scanner para realizar las operaciones de lectura.
-	private boolean simulacionTerminada; // Controla el fin de la simulacion.
+	// Mundo sobre el que ejecutar los comandos.
+	private Mundo mundo;
+	// Scanner para realizar las operaciones de lectura.
+	private Scanner in;
+	// Controla el fin de la simulacion.
+	private boolean simulacionTerminada;
 
 	/**
-	 * Inicializa los atributos.
+	 * Constructor de la clase. Inicializa los atributos.
 	 * 
 	 * @param mundo
 	 *            Mundo sobre el que se ejecutaran los comandos.
@@ -35,6 +38,8 @@ public class Controlador {
 
 	/**
 	 * Bucle en el que se pide un comando al usuario y se ejecuta dicho comando.
+	 * Se continua pidiendo y ejecutando comandos (controlando excepciones)
+	 * hasta que se introduce el comando SALIR-
 	 */
 	public void realizarSimulacion() {
 		String cadena;
@@ -50,7 +55,6 @@ public class Controlador {
 			cadena = cadena.toUpperCase();
 			String[] array = cadena.split("\\s+");
 			try {
-				// if(mundo )
 				Comando comando = ParserComandos.parseaComando(array);
 				this.fueraDeRango(comando);
 				comando.ejecuta(this);
@@ -95,10 +99,24 @@ public class Controlador {
 		this.simulacionTerminada = true;
 	}
 
+	/**
+	 * Muestra la ayuda referente a los distintos comandos ejecutables.
+	 */
 	public void muestraAyuda() {
 		System.out.print(ParserComandos.AyudaComandos());
 	}
 
+	/**
+	 * Crea una celula en la posicion indicada, distinguiendo si se esta jugando
+	 * en un mundo simple o complejo.
+	 * 
+	 * @param f
+	 *            Posicion fila de la celula.
+	 * @param c
+	 *            Posicion columna de la celula.
+	 * @throws PosicionNoValida
+	 * @throws SeleccionNoValida
+	 */
 	public void creaCelula(int f, int c) throws PosicionNoValida, SeleccionNoValida {
 		Casilla casilla = new Casilla(f, c);
 		// Caso Mundo Complejo
@@ -110,58 +128,85 @@ public class Controlador {
 			// throw new SeleccionNoValida();
 			if (tipo.equals("1")) {
 				if (!((MundoComplejo) mundo).crearCelulaCompleja(casilla)) {
-					throw new PosicionNoValida();
+					throw new PosicionNoValida("Casilla ocupada.");
 				}
 			} else if (tipo.equals("2")) {
 				if (!((MundoComplejo) mundo).crearCelulaSimple(casilla)) {
-					throw new PosicionNoValida();
+					throw new PosicionNoValida("Casilla ocupada.");
 				}
-			}
-			else throw new SeleccionNoValida();
+			} else
+				throw new SeleccionNoValida();
 		}
 		// El mundo es simple
 		else {
 			if (!mundo.crearCelulaSimple(casilla)) {
-				throw new PosicionNoValida();
+				throw new PosicionNoValida("Casilla ocupada.");
 			}
 		}
 	}
 
-	public void eliminaCelula(int f, int c) {
+	/**
+	 * Elimina una celula de la posicion indicada
+	 * 
+	 * @param f
+	 *            Posicion fila de la celula.
+	 * @param c
+	 *            Posicion columna de la celula.
+	 */
+	public void eliminaCelula(int f, int c) throws PosicionNoValida{
 		if (!mundo.eliminarCelula(f, c)) {
-			System.out.println("No se pudo eliminar la celula, " + "posicion no valida");
+			throw new PosicionNoValida("No hay celulas en esa posicion.");
 		}
 	}
 
+	/**
+	 * Inicia un nuevo mundo con los valores de juego fijados en ese momento.
+	 */
 	public void inicia() {
 		mundo.vaciarMundo();
 		mundo.inicializaMundo();
 	}
 
+	/**
+	 * Cambia del juego actual a otro con otros valores.
+	 * 
+	 * @param mundo
+	 *            Nuevo mundo sobre el que se realiza la simulacion.
+	 */
 	public void juega(Mundo mundo) {
 		this.mundo = mundo;
 	}
 
+	/**
+	 * Realiza un paso sobre todas las celulas del mundo.
+	 */
 	public void daUnPaso() {
 		mundo.evoluciona();
 	}
 
+	/**
+	 * Termina la simulacion.
+	 */
 	public void sal() {
 		this.simulacionTerminada = true;
 	}
 
+	/**
+	 * Vacia el mundo.
+	 */
 	public void vacia() {
 		mundo.vaciarMundo();
 	}
 
 	/**
-	 * En caso de que el comando requiera verificar el rango de los indices,
-	 * lanza una excepcion si dichos indices no se encuentran en el rango
-	 * establecido.
+	 * Verifica si el los indices de aquellos comandos que contengan un valor de
+	 * posicion se encuentran dentro del rango establecido.
 	 * 
 	 * @param comando
-	 *            Sólo verifica los comandos CrearCelula y EliminarCelula
+	 *            Comando a verificar. Sólo verifica los comandos CrearCelula y
+	 *            EliminarCelula.
 	 * @throws IndicesFueraDeRango
+	 *             Cuando los indices no se encuentran en el rango.
 	 */
 	public void fueraDeRango(Comando comando) throws IndicesFueraDeRango {
 		if (comando instanceof CrearCelula) {
@@ -181,6 +226,13 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Almacena en un fichero la configuracion del juego actual.
+	 * 
+	 * @param nombreFichero
+	 *            Fichero donde almacenar los datos.
+	 * @throws ArchivoIncorrecto
+	 */
 	public void guarda(String nombreFichero) throws ArchivoIncorrecto {
 		// Escritura de datos
 		try {
@@ -192,33 +244,44 @@ public class Controlador {
 		}
 	}
 
+	/**
+	 * Carga como juego actual, el almacenado en un fichero.
+	 * 
+	 * @param nombreFichero
+	 *            Fichero desde el que cargar los datos.
+	 * @throws ArchivoNoEncontrado
+	 * @throws ArchivoIncorrecto
+	 * @throws PalabraIncorrecta
+	 */
 	public void carga(String nombreFichero) throws ArchivoNoEncontrado, ArchivoIncorrecto, PalabraIncorrecta {
 		// Lectura datos
 		try {
-			BufferedReader entrada = new BufferedReader(new FileReader(nombreFichero));
-			String tipo = entrada.readLine();
+			Scanner entrada = new Scanner(new File(nombreFichero));
+			String tipo = entrada.nextLine();
 			int f, c;
-			f = Integer.parseInt(entrada.readLine());
-				c = Integer.parseInt(entrada.readLine());
-				if (f < 1 || c < 1) {
-					entrada.close();
-					throw new PalabraIncorrecta();
-				}
-			if (tipo.equals("simple")) {				
-				mundo = new MundoSimple(f, c, 0);
-				mundo.cargar(entrada);
+			f = Integer.parseInt(entrada.nextLine());
+			c = Integer.parseInt(entrada.nextLine());
+			if (f < 1 || c < 1) {
+				entrada.close();
+				throw new PalabraIncorrecta();
 			}
-			else if (tipo.equals("complejo")) {
-				mundo = new MundoComplejo(f, c, 0, 0);
-				mundo.cargar(entrada);
+			Mundo aux; // Evita problemas en caso de error.
+			if (tipo.equals("simple")) {
+				aux = new MundoSimple(f, c, 0);
+				aux.cargar(entrada);
+				this.mundo = aux;
+			} else if (tipo.equals("complejo")) {
+				aux = new MundoComplejo(f, c, 0, 0);
+				aux.cargar(entrada);
+				this.mundo = aux;
 			}
 			entrada.close();
-		}catch (NumberFormatException e){
+		} catch (NumberFormatException e) {
 			throw new PalabraIncorrecta();
 		} catch (FileNotFoundException e) {
 			throw new ArchivoNoEncontrado();
-		} catch (IOException e) {
-			throw new ArchivoIncorrecto();
+		} catch (NoSuchElementException e) {
+			throw new PalabraIncorrecta();
 		}
 	}
 }

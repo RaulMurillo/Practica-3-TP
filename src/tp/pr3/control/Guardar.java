@@ -1,16 +1,25 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando Guardar.
+ * Clase que implementa el comando GUARDAR.
  * 
- * @version 1.0, 18/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Guardar implements Comando {
+	// Identificador del comando
 	public final String GUARDAR = "GUARDAR";
-	private String nombreFichero; // Nombre del fichero a guardar.
+	// Nombre del fichero a guardar.
+	private String nombreFichero;
 
+	/**
+	 * Constructor de la clase. Asigna el nombre del fichero donde se guardara
+	 * la informacion de la partida.
+	 * 
+	 * @param nombreFichero
+	 *            Fichero donde se guardara la informacion de la partida.
+	 */
 	public Guardar(String nombreFichero) {
 		this.nombreFichero = nombreFichero;
 	}
@@ -20,14 +29,7 @@ public class Guardar implements Comando {
 		controlador.guarda(this.nombreFichero);
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando Guardar si el array de strings se corresponde con este, null
-	 *         en otro caso.
-	 */
+	@Override
 	public Comando parsea(String[] cadenaComando) {
 		if (cadenaComando.length != 2)
 			return null;
@@ -37,11 +39,7 @@ public class Guardar implements Comando {
 			return null;
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a Paso.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("GUARDAR NOMFICH: Permite almacenar en un fichero de texto, "
 				+ "de nombre NOMBFICH, la configuracion del juego actual");

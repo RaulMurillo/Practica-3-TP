@@ -1,19 +1,42 @@
 package tp.pr3.logica;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import tp.pr3.control.PalabraIncorrecta;
 
+/**
+ * Clase que especializa a Mundo. Contiene como atributo propio en numero de
+ * celulas complejas iniciales.
+ * 
+ * @version 1.0, 15/01/2016
+ * @author Raul Murillo Montero
+ * @author Antonio Valdivia de la Torre
+ *
+ */
 public class MundoComplejo extends Mundo {
-	// nº de células simples con las que se inicia la superficie.
+	// Nº de células complejas con las que se inicia la superficie.
 	private int numComplejas;
 
+	/**
+	 * Constructora de la clase. Crea un mundo con los parametros dados.
+	 * 
+	 * @param filas
+	 *            Numero de filas del mundo.
+	 * @param columnas
+	 *            Numero de columnas que tendra la superficie del mundo.
+	 * @param numSimples
+	 *            Numero de celulas simples que tendra al cominezo la superficie
+	 *            del mundo.
+	 * @param numComplejas
+	 *            Numero de celulas complejas que tendra al cominezo la
+	 *            superficie del mundo.
+	 */
 	public MundoComplejo(int filas, int columnas, int numSimples, int numComplejas) {
-		super(filas, columnas); // ERROR
+		super(filas, columnas);
 		this.numSimples = numSimples;
 		this.numComplejas = numComplejas;
-		inicializaMundo();// ???
+		inicializaMundo();
 
 	}
 
@@ -64,53 +87,40 @@ public class MundoComplejo extends Mundo {
 	}
 
 	/**
-	 * Dadas unas coordenadas, crea una celula compleja en dicha posicion de la
+	 * Dadas una casilla, crea una celula compleja en dicha posicion de la
 	 * superficie.
 	 * 
-	 * @param f
-	 *            coordenada fila.
-	 * @param c
-	 *            coordenada columna.
-	 * @return true si se ha creado la celula.
+	 * @param casilla
+	 *            Casilla donde crear la celula.
+	 * @return true si se ha creado la celula, false en caso contrario.
 	 */
-	public boolean crearCelulaCompleja(Casilla cas) {
-		return superficie.crearCelulaCompleja(cas);
+	public boolean crearCelulaCompleja(Casilla casilla) {
+		return superficie.crearCelulaCompleja(casilla);
 	}
 
 	@Override
-	public void cargar(BufferedReader entrada) throws PalabraIncorrecta {
+	public void cargar(Scanner entrada) throws PalabraIncorrecta {
 		String s;
 		try {
-			while ((s = entrada.readLine()) != null) {
-				String[] array = s.split("\\s+");
-				if (array.length == 5 && array[2].equals("simple")) {
-					int f = Integer.parseInt(array[0]);
-					int c = Integer.parseInt(array[1]);
-					int n = Integer.parseInt(array[3]);
-					int m = Integer.parseInt(array[4]);
-					if (f < 0 || f >= filas || c < 0 || c >= columnas) {
-						throw new PalabraIncorrecta();
-					}
-					superficie.cargar(f, c, n, m);
-				} else if (array.length == 4 && array[2].equals("compleja")) {
-					int f = Integer.parseInt(array[0]);
-					int c = Integer.parseInt(array[1]);
-					int n = Integer.parseInt(array[3]);
-					int m = -1;
-					
-					if (f < 0 || f >= filas || c < 0 || c >= columnas) {
-						throw new PalabraIncorrecta();
-					}
-					superficie.cargar(f, c, n, m);// m=-1
-				} else{
-					System.out.println("X");
+			while ((s = entrada.next()) != null) {
+				int f = Integer.parseInt(s);
+				int c = Integer.parseInt(entrada.next());
+				if (f < 0 || f >= filas || c < 0 || c >= columnas)
 					throw new PalabraIncorrecta();
-				}
+				s = entrada.next();
+				Celula celula;
+				if (s.equals("simple")) {
+					celula = new CelulaSimple();
+				} else if (s.equals("compleja")) {
+					celula = new CelulaCompleja();
+				} else
+					throw new PalabraIncorrecta();
+				Casilla casilla = new Casilla(f, c);
+				superficie.cargarCelula(entrada, casilla, celula);
 			}
-		} catch (IOException e) {
-			throw new PalabraIncorrecta();
 		} catch (NumberFormatException e) {
 			throw new PalabraIncorrecta();
-		}
+		} catch (NoSuchElementException e) {
+		} // Fin de archivo.
 	}
 }

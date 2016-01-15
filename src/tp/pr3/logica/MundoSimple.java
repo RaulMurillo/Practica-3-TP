@@ -1,12 +1,31 @@
 package tp.pr3.logica;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import tp.pr3.control.PalabraIncorrecta;
 
+/**
+ * Clase que especializa a Mundo.
+ * 
+ * @version 1.0, 15/01/2016
+ * @author Raul Murillo Montero
+ * @author Antonio Valdivia de la Torre
+ *
+ */
 public class MundoSimple extends Mundo {
 
+	/**
+	 * Constructora de la clase. Crea un mundo con los parametros dados.
+	 * 
+	 * @param filas
+	 *            Numero de filas del mundo.
+	 * @param columnas
+	 *            Numero de columnas que tendra la superficie del mundo.
+	 * @param numCelulas
+	 *            Numero de celulas simples que tendra al cominezo la superficie
+	 *            del mundo.
+	 */
 	public MundoSimple(int filas, int columnas, int numCelulas) {
 		super(filas, columnas);
 		this.numSimples = numCelulas;
@@ -40,7 +59,6 @@ public class MundoSimple extends Mundo {
 			aleatorio[i] = aleatorio[rnd];
 			aleatorio[rnd] = aux;
 		}
-
 		// Se crean células en las posiciones indicadas.
 		for (i = 0; i < filas * columnas; i++) {
 			// Se entiende que la matriz no es vacía (0x0)
@@ -51,27 +69,27 @@ public class MundoSimple extends Mundo {
 	}
 
 	@Override
-	public void cargar(BufferedReader entrada) throws PalabraIncorrecta {
+	public void cargar(Scanner entrada) throws PalabraIncorrecta {
 		String s;
 		try {
-			while ((s = entrada.readLine()) != null) {
-				String[] array = s.split("\\s+");
-				if (array.length != 5 || !array[2].equals("simple"))
-					throw new PalabraIncorrecta();
-				// else
-				int f = Integer.parseInt(array[0]);
-				int c = Integer.parseInt(array[1]);
-				int n = Integer.parseInt(array[3]);
-				int m = Integer.parseInt(array[4]);
+			while ((s = entrada.next()) != null) {
+				int f = Integer.parseInt(s);
+				int c = Integer.parseInt(entrada.next());
 				if (f < 0 || f >= filas || c < 0 || c >= columnas) {
 					throw new PalabraIncorrecta();
 				}
-				superficie.cargar(f, c, n, m);
+				s = entrada.next();
+				Celula celula;
+				if (s.equals("simple")) {
+					celula = new CelulaSimple();
+				} else
+					throw new PalabraIncorrecta();
+				Casilla casilla = new Casilla(f, c);
+				superficie.cargarCelula(entrada, casilla, celula);
 			}
-		} catch (IOException e) {
-			throw new PalabraIncorrecta();
 		} catch (NumberFormatException e) {
 			throw new PalabraIncorrecta();
-		}
+		} catch (NoSuchElementException e) {
+		} // Fin de archivo.
 	}
 }

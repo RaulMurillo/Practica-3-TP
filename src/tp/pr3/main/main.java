@@ -7,9 +7,9 @@ import tp.pr3.logica.*;
 import java.util.Scanner;
 
 /**
- * Es la clase que contiene el metodo main de la practica.
+ * Clase que contiene el metodo main de la practica.
  * 
- * @version 1.0, 07/11/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
@@ -22,9 +22,9 @@ public class main {
 	 *            .
 	 */
 	public static void main(String[] args) {
-		Mundo mundo = new MundoComplejo(3,3,2,1); //null;
+		Mundo mundo = new MundoSimple(3, 3, 3);
 		Scanner in = new Scanner(System.in);
 		Controlador controlador = new Controlador(mundo, in);
 		controlador.realizarSimulacion();
-	}	
+	}
 }

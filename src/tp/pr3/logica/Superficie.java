@@ -1,23 +1,24 @@
 package tp.pr3.logica;
 
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import tp.pr3.control.PalabraIncorrecta;
 
 /**
- * Esta clase representa la superficie donde transcurre la evolucion de las
+ * Clase que representa la superficie donde transcurre la evolucion de las
  * celulas. La superficie la vamos a representar mediante una matriz de celulas,
  * cuyo tamaño queda determinado por su numero de filas y columnas.
  * 
- * @version 2.0, 11/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 
 public class Superficie {
 	private Celula[][] superficie; // Matriz de células.
-	private int filas; // Filas de la matriz superficie.
-	private int columnas; // Columnas de la matriz superficie.
+	private int filas; // Numero de filas de la matriz superficie.
+	private int columnas; // Numero de columnas de la matriz superficie.
 
 	/**
 	 * Crea una superficie a partir de su numero de filas y columnas.
@@ -34,17 +35,9 @@ public class Superficie {
 	}
 
 	/**
-	 * Dada una casilla, crea una celula en dicha posicion.
-	 * 
-	 * @param casilla
-	 *            casilla destino.
-	 * @return true si se ha creado la celula. false si no ha sido posible.
-	 */
-
-	/**
 	 * Indica las filas de la superficie.
 	 * 
-	 * @return numero de filas de la superficie.
+	 * @return Numero de filas de la superficie.
 	 */
 	public int getFilas() {
 		return filas;
@@ -53,7 +46,7 @@ public class Superficie {
 	/**
 	 * Indica las columnas de la superficie.
 	 * 
-	 * @return numero de columnas de la superficie.
+	 * @return Numero de columnas de la superficie.
 	 */
 	public int getColumnas() {
 		return columnas;
@@ -67,8 +60,8 @@ public class Superficie {
 	 * @return true si se ha creado, false si no.
 	 */
 	public boolean crearCelulaSimple(Casilla casilla) {
-		if (superficie[casilla.getX()][casilla.getY()] == null) {
-			superficie[casilla.getX()][casilla.getY()] = new CelulaSimple();
+		if (superficie[casilla.getFila()][casilla.getColumna()] == null) {
+			superficie[casilla.getFila()][casilla.getColumna()] = new CelulaSimple();
 			return true;
 		} else
 			return false;
@@ -82,8 +75,8 @@ public class Superficie {
 	 * @return true si se ha creado, false si no.
 	 */
 	public boolean crearCelulaCompleja(Casilla casilla) {
-		if (superficie[casilla.getX()][casilla.getY()] == null) {
-			superficie[casilla.getX()][casilla.getY()] = new CelulaCompleja();
+		if (superficie[casilla.getFila()][casilla.getColumna()] == null) {
+			superficie[casilla.getFila()][casilla.getColumna()] = new CelulaCompleja();
 			return true;
 		} else
 			return false;
@@ -97,8 +90,8 @@ public class Superficie {
 	 * @return true si eliminada.
 	 */
 	public boolean eliminarCelula(Casilla casilla) {
-		if (superficie[casilla.getX()][casilla.getY()] != null) {
-			superficie[casilla.getX()][casilla.getY()] = null;
+		if (superficie[casilla.getFila()][casilla.getColumna()] != null) {
+			superficie[casilla.getFila()][casilla.getColumna()] = null;
 			return true;
 		} else
 			return false;
@@ -153,26 +146,26 @@ public class Superficie {
 	}
 
 	/**
-	 * Indica si una casilla contiene una celula comestible.
+	 * Indica si una casilla contiene una celula comestible (simple).
 	 * 
 	 * @param casilla
-	 *            casilla a evaluar.
+	 *            Casilla a evaluar.
 	 * @return true si la celula de la casilla es comestible.
 	 */
 	public boolean esComestible(Casilla casilla) {
-		return superficie[casilla.getX()][casilla.getY()] instanceof CelulaSimple;
+		return superficie[casilla.getFila()][casilla.getColumna()] instanceof CelulaSimple;
 	}
 
 	/**
 	 * Mueve la celula de una casilla a otra.
 	 * 
 	 * @param origen
-	 *            casilla origen.
+	 *            Casilla origen.
 	 * @param destino
-	 *            casilla destino.
+	 *            Casilla destino.
 	 */
 	public void moverA(Casilla origen, Casilla destino) {
-		superficie[destino.getX()][destino.getY()] = superficie[origen.getX()][origen.getY()];
+		superficie[destino.getFila()][destino.getColumna()] = superficie[origen.getFila()][origen.getColumna()];
 		eliminarCelula(origen);
 	}
 
@@ -180,23 +173,43 @@ public class Superficie {
 	 * Indica si una determinada casilla de la supesrficie esta o no vacia.
 	 * 
 	 * @param casilla
-	 *            casilla a evaluar.
+	 *            Casilla a evaluar.
 	 * @return true si la casilla esta vacia.
 	 */
 	public boolean vacia(Casilla casilla) {
-		return (superficie[casilla.getX()][casilla.getY()] == null);
+		return (superficie[casilla.getFila()][casilla.getColumna()] == null);
 	}
 
-	public void guardar(PrintWriter salida, int i, int j) {
+	/**
+	 * Dados un flujo de escritura y unas coordenadas, guarda la información de
+	 * la célula que ocupa dicha casilla.
+	 * 
+	 * @param salida
+	 *            Flujo de escritura.
+	 * @param i
+	 *            Valor de la coordenada fila.
+	 * @param j
+	 *            Valor de la coordenada columna.
+	 */
+	public void guardarCelula(PrintWriter salida, int i, int j) {
 		superficie[i][j].guardar(salida);
 	}
 
-	public void cargar(int i, int j, int n, int m) throws PalabraIncorrecta {
-		Casilla casilla = new Casilla(i, j);
-		if (m == -1)
-			crearCelulaCompleja(casilla);
-		else
-			crearCelulaSimple(casilla);
-		superficie[i][j].cargar(n, m);
+	/**
+	 * Dados un flujo de lectura, una casilla y una célula, lee la información
+	 * de una célula, la carga en la dada y se asigna la celula a la casilla
+	 * dada.
+	 * 
+	 * @param entrada
+	 *            Flujo de lectura.
+	 * @param casilla
+	 *            Casilla donde se debe asignar la celula.
+	 * @param celula
+	 *            Celula que se debe cargar.
+	 * @throws PalabraIncorrecta
+	 */
+	public void cargarCelula(Scanner entrada, Casilla casilla, Celula celula) throws PalabraIncorrecta {
+		celula.cargar(entrada);
+		superficie[casilla.getFila()][casilla.getColumna()] = celula;
 	}
 }

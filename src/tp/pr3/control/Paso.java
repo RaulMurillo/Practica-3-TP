@@ -1,42 +1,27 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando paso
+ * Clase que implementa el comando PASO.
  * 
- * @version 1.0, 07/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Paso implements Comando {
+	//Identificador del comando
 	public final String PASO = "PASO";
 
-	/**
-	 * Ejecuta un paso sobre el mundo.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
+	@Override
 	public void ejecuta(Controlador controlador) {
 		controlador.daUnPaso();
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a Paso.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("PASO: Realiza un paso en la simulacion");
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando Paso si el array de strings se corresponde con este, null
-	 *         en otro caso.
-	 */
+	@Override
 	public Comando parsea(String[] cadenaComando) {
 		if (cadenaComando.length != 1)
 			return null;

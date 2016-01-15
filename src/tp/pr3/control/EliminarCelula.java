@@ -1,60 +1,46 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando eliminar celula con atributos f, c para
- * indicar de que casilla se eliminara.
+ * Clase que implementa el comando ELIMINARCELULA F C con atributos f, c para
+ * indicar en que casilla se eliminara la celula.
  * 
- * @version 1.0, 07/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class EliminarCelula implements Comando {
+	// Identificador del comando
 	public final String ELIMINARCELULA = "ELIMINARCELULA";
+	// Fila donde crear la celula.
 	private int f;
+	// Columna donde crear la celula.private int c;
 	private int c;
 
 	/**
 	 * Constructor de la clase.
 	 * 
 	 * @param fila
-	 *            Coordenada X.
+	 *            Coordenada fila.
 	 * @param columna
-	 *            Coordenada Y.
+	 *            Coordenada columna.
 	 */
 	public EliminarCelula(int fila, int columna) {
-		f = fila;
-		c = columna;
+		this.f = fila;
+		this.c = columna;
 	}
 
-	/**
-	 * Elimina la celula de la casilla (f,c) si es posible, si no muestra un
-	 * mensaje de error.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
-	public void ejecuta(Controlador controlador) throws PosicionNoValida{
+	@Override
+	public void ejecuta(Controlador controlador) throws PosicionNoValida {
 		controlador.eliminaCelula(f, c);
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a EliminarCelula.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("ELIMINARCELULA f c: Elimina la celula de la casilla (f, c)" + " si es posible");
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando EliminarCelula si el array de strings se corresponde con
-	 *         este, null en otro caso.
-	 */
-	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto{
+	@Override
+	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto {
 		if (cadenaComando.length != 3)
 			return null;
 		else if (!cadenaComando[0].equals(ELIMINARCELULA))
@@ -62,21 +48,31 @@ public class EliminarCelula implements Comando {
 		else {
 			// Se gestionan errores tipo "eliminarcelula a 8"
 			int f, c;
-			try{
-			f = Integer.parseInt(cadenaComando[1]);
-			c = Integer.parseInt(cadenaComando[2]);
-			}catch(NumberFormatException e){
+			try {
+				f = Integer.parseInt(cadenaComando[1]);
+				c = Integer.parseInt(cadenaComando[2]);
+			} catch (NumberFormatException e) {
 				throw new FormatoNumericoIncorrecto();
 			}
 			return new EliminarCelula(f, c);
 		}
 	}
-	
-	public int getFilas(){
+
+	/**
+	 * Indica la fila donde eliminar la celula.
+	 * 
+	 * @return Numero de la fila.
+	 */
+	public int getFilas() {
 		return this.f;
 	}
-	
-	public int getColumnas(){
+
+	/**
+	 * Indica la columna donde eliminar la celula.
+	 * 
+	 * @return Numero de la columna.
+	 */
+	public int getColumnas() {
 		return this.c;
 	}
 }

@@ -1,60 +1,46 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando crear celula compleja con atributos f, c para
- * indicar en que casilla se creara.
+ * Clase que implementa el comando CREARCELULA F C con atributos f, c para
+ * indicar en que casilla se creara la celula.
  * 
- * @version 1.0, 07/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class CrearCelula implements Comando {
+	// Identificador del comando
 	public final String CREARCELULA = "CREARCELULA";
+	// Fila donde crear la celula.
 	private int f;
+	// Columna donde crear la celula.
 	private int c;
 
 	/**
 	 * Constructor de la clase
 	 * 
 	 * @param fila
-	 *            Coordenada X.
+	 *            Coordenada fila.
 	 * @param columna
-	 *            Coordenada Y.
+	 *            Coordenada columna.
 	 */
 	public CrearCelula(int fila, int columna) {
-		f = fila;
-		c = columna;
+		this.f = fila;
+		this.c = columna;
 	}
 
-	/**
-	 * Crea una celula compleja en la posicion (f, c) si es posible, si no
-	 * muestra error.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
+	@Override
 	public void ejecuta(Controlador controlador) throws PosicionNoValida, SeleccionNoValida {
 		controlador.creaCelula(f, c);
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a CrearCelulaCompleja.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("CREARCELULACOMPLEJA f c: Crea una nueva celula compleja en la posicion " + "(f,c) si es posible");
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando CrearCelulaCompleja si el array de strings se corresponde
-	 *         con este, null en otro caso.
-	 */
-	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto{
+	@Override
+	public Comando parsea(String[] cadenaComando) throws FormatoNumericoIncorrecto {
 		if (cadenaComando.length != 3)
 			return null;
 		else if (!cadenaComando[0].equals(CREARCELULA))
@@ -71,12 +57,22 @@ public class CrearCelula implements Comando {
 			return new CrearCelula(f, c);
 		}
 	}
-	
-	public int getFilas(){
+
+	/**
+	 * Indica la fila donde crear la celula.
+	 * 
+	 * @return Numero de la fila.
+	 */
+	public int getFilas() {
 		return this.f;
 	}
-	
-	public int getColumnas(){
+
+	/**
+	 * Indica la columna donde crear la celula.
+	 * 
+	 * @return Numero de la columna.
+	 */
+	public int getColumnas() {
 		return this.c;
 	}
 }

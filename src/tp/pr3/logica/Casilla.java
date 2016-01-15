@@ -1,11 +1,11 @@
 package tp.pr3.logica;
 
 /**
- * Esta clase representa las casillas que formaran la superficie. Contiene
+ * Clase que representa las casillas que formaran la superficie. Contiene
  * atributos privados para indicar la posicion da cada casilla en la matriz
  * superficie.
  * 
- * @version 2.0, 11/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
@@ -30,18 +30,18 @@ public class Casilla {
 	/**
 	 * Indica la coordenada horizontal de una casilla.
 	 * 
-	 * @return Coord. X
+	 * @return Coordenada fila.
 	 */
-	public int getX() {
+	public int getFila() {
 		return f;
 	}
 
 	/**
 	 * Indica la coordenada vertical de una casilla.
 	 * 
-	 * @return Coord. Y
+	 * @return Coordenada columna.
 	 */
-	public int getY() {
+	public int getColumna() {
 		return c;
 	}
 

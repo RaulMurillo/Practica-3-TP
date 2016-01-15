@@ -3,19 +3,21 @@ package tp.pr3.control;
 import tp.pr3.logica.*;
 
 /**
- * Clase que implementa el comando Jugar.
+ * Clase que implementa el comando JUGAR.
  * 
- * @version 1.0, 18/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Jugar implements Comando {
+	// Identificador del comando
 	public final String JUGAR = "JUGAR";
+	// Mundo sobre el que se cambiará el juego
 	private Mundo mundo;
 
 	/**
-	 * Constructor simple de la clase. Inicializa el atributo mundo como uno
-	 * simple.
+	 * Constructor simple de la clase. Inicializa el atributo mundo como un
+	 * mundo simple.
 	 * 
 	 * @param n
 	 *            Numero de filas.
@@ -29,8 +31,8 @@ public class Jugar implements Comando {
 	}
 
 	/**
-	 * Constructor complejo de la clase. Inicializa el atributo mundo como uno
-	 * comlejo.
+	 * Constructor complejo de la clase. Inicializa el atributo mundo como un
+	 * mundo complejo.
 	 * 
 	 * @param n
 	 *            Numero de filas.
@@ -45,22 +47,12 @@ public class Jugar implements Comando {
 		this.mundo = new MundoComplejo(n, m, s, c);
 	}
 
-	/**
-	 * Inicia la simulacion con una nueva configuracion del juego
-	 * correspondiente, con una superficie de N filas y M columnas.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
+	@Override
 	public void ejecuta(Controlador controlador) {
 		controlador.juega(this.mundo);
 	}
 
-	/**
-	 * Genera el codigo de ayuda referente a Jugar.
-	 * 
-	 * @return Texto de ayuda correspondiente al comando.
-	 */
+	@Override
 	public String textoAyuda() {
 		return ("JUGAR SIMPLE N M S: Inicia la simulacion con una nueva "
 				+ "configuracion del juego simple, con una superficie "
@@ -71,14 +63,7 @@ public class Jugar implements Comando {
 				+ "y C celulas complejas colocadas de forma aleatoria");
 	}
 
-	/**
-	 * Parsea un array de String para construir el comando que representa.
-	 * 
-	 * @param cadenaComando
-	 *            Array de String a parsear.
-	 * @return Comando Iniciar si el array de strings se corresponde con este,
-	 *         null en otro caso.
-	 */
+	@Override
 	public Comando parsea(String[] cadenaComando) throws ErrorDeInicializacion, FormatoNumericoIncorrecto {
 		if (cadenaComando[0].equals(JUGAR)) {
 			if (cadenaComando.length == 5 && cadenaComando[1].equals("SIMPLE")) {

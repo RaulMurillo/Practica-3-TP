@@ -1,21 +1,17 @@
 package tp.pr3.control;
 
 /**
- * Clase que implementa el comando salir
+ * Clase que implementa el comando VACIAR.
  * 
- * @version 1.0, 07/12/2015
+ * @version 3.0, 15/01/2016
  * @author Raul Murillo Montero
  * @author Antonio Valdivia de la Torre
  */
 public class Vaciar implements Comando {
+	// Identificador del comando
 	public final String VACIAR = "VACIAR";
 
-	/**
-	 * Vacia la superficie del mundo de celulas.
-	 * 
-	 * @param mundo
-	 *            Mundo sobre el que se ejecuta el comando.
-	 */
+	@Override
 	public void ejecuta(Controlador controlador) {
 		controlador.vacia();
 	}
