@@ -56,7 +56,6 @@ public class Controlador {
 			String[] array = cadena.split("\\s+");
 			try {
 				Comando comando = ParserComandos.parseaComando(array);
-				this.fueraDeRango(comando);
 				comando.ejecuta(this);
 			} catch (FormatoNumericoIncorrecto e) {
 				System.out.println(e.getMessage());
@@ -116,11 +115,13 @@ public class Controlador {
 	 *            Posicion columna de la celula.
 	 * @throws PosicionNoValida
 	 * @throws SeleccionNoValida
+	 * @throws IndicesFueraDeRango
 	 */
-	public void creaCelula(int f, int c) throws PosicionNoValida, SeleccionNoValida {
+	public void creaCelula(int f, int c) throws PosicionNoValida, SeleccionNoValida, IndicesFueraDeRango {
+		this.fueraDeRango(f, c);
 		Casilla casilla = new Casilla(f, c);
 		// Caso Mundo Complejo
-		if (this.mundo instanceof MundoComplejo) {
+		if (!this.esSimple()) {
 			System.out.print("De que tipo: Compleja (1) o Simple (2): ");
 			String tipo;
 			tipo = in.nextLine();
@@ -152,8 +153,10 @@ public class Controlador {
 	 *            Posicion fila de la celula.
 	 * @param c
 	 *            Posicion columna de la celula.
+	 * @throws IndicesFueraDeRango
 	 */
-	public void eliminaCelula(int f, int c) throws PosicionNoValida{
+	public void eliminaCelula(int f, int c) throws PosicionNoValida, IndicesFueraDeRango {
+		this.fueraDeRango(f, c);
 		if (!mundo.eliminarCelula(f, c)) {
 			throw new PosicionNoValida("No hay celulas en esa posicion.");
 		}
@@ -200,29 +203,19 @@ public class Controlador {
 
 	/**
 	 * Verifica si el los indices de aquellos comandos que contengan un valor de
-	 * posicion se encuentran dentro del rango establecido.
+	 * posicion se encuentran dentro del rango establecido. Sólo se emplea con
+	 * los comandos CrearCelula y EliminarCelula.
 	 * 
-	 * @param comando
-	 *            Comando a verificar. Sólo verifica los comandos CrearCelula y
-	 *            EliminarCelula.
+	 * @param fila
+	 *            Numero de fila a procesar.
+	 * @param columna
+	 *            Numero de columna a procesar.
 	 * @throws IndicesFueraDeRango
 	 *             Cuando los indices no se encuentran en el rango.
 	 */
-	public void fueraDeRango(Comando comando) throws IndicesFueraDeRango {
-		if (comando instanceof CrearCelula) {
-			int filaComando = ((CrearCelula) comando).getFilas();
-			int columnaComando = ((CrearCelula) comando).getColumnas();
-			if (filaComando < 0 || filaComando >= mundo.getFilas() || columnaComando < 0
-					|| columnaComando >= mundo.getColumnas()) {
-				throw new IndicesFueraDeRango();
-			}
-		} else if (comando instanceof EliminarCelula) {
-			int filaComando = ((EliminarCelula) comando).getFilas();
-			int columnaComando = ((EliminarCelula) comando).getColumnas();
-			if (filaComando < 0 || filaComando >= mundo.getFilas() || columnaComando < 0
-					|| columnaComando >= mundo.getColumnas()) {
-				throw new IndicesFueraDeRango();
-			}
+	public void fueraDeRango(int fila, int columna) throws IndicesFueraDeRango {
+		if (fila < 0 || fila >= mundo.getFilas() || columna < 0 || columna >= mundo.getColumnas()) {
+			throw new IndicesFueraDeRango();
 		}
 	}
 
@@ -283,5 +276,14 @@ public class Controlador {
 		} catch (NoSuchElementException e) {
 			throw new PalabraIncorrecta();
 		}
+	}
+
+	/**
+	 * Indica si el mundo del controlador es simple.
+	 * 
+	 * @return true si es simple.
+	 */
+	public boolean esSimple() {
+		return this.mundo.esSimple();
 	}
 }

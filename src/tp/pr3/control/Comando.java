@@ -21,7 +21,7 @@ interface Comando {
 	 * @throws PalabraIncorrecta
 	 */
 	public abstract void ejecuta(Controlador controlador)
-			throws PosicionNoValida, SeleccionNoValida, ArchivoIncorrecto, ArchivoNoEncontrado, PalabraIncorrecta;
+			throws PosicionNoValida, SeleccionNoValida, ArchivoIncorrecto, ArchivoNoEncontrado, PalabraIncorrecta, IndicesFueraDeRango;
 
 	/**
 	 * Genera un String con la informacion de ayuda que se quiera mostrar sobre

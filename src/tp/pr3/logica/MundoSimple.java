@@ -1,5 +1,6 @@
 package tp.pr3.logica;
 
+import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -69,6 +70,22 @@ public class MundoSimple extends Mundo {
 	}
 
 	@Override
+	public void guardar(PrintWriter salida) {
+		salida.println("simple");
+		salida.println(filas);
+		salida.println(columnas);
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				Casilla casilla = new Casilla(i, j);
+				if (!superficie.vacia(casilla)) {
+					salida.print(i + " " + j + " ");
+					superficie.guardarCelula(salida, i, j);
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void cargar(Scanner entrada) throws PalabraIncorrecta {
 		String s;
 		try {
@@ -91,5 +108,10 @@ public class MundoSimple extends Mundo {
 			throw new PalabraIncorrecta();
 		} catch (NoSuchElementException e) {
 		} // Fin de archivo.
+	}
+
+	@Override
+	public boolean esSimple() {
+		return true;
 	}
 }

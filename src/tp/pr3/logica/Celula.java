@@ -63,5 +63,12 @@ interface Celula {
 	 * @throws PalabraIncorrecta
 	 */
 	public abstract void cargar(Scanner entrada) throws PalabraIncorrecta;
+	
+	/**
+	 * Indica si una casilla contiene una celula comestible (simple).
+	 * 
+	 * @return true si la celula de la es simple.
+	 */
+	public abstract boolean esComestible();
 
 }

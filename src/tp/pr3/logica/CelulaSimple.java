@@ -20,9 +20,9 @@ public class CelulaSimple implements Celula {
 	private int pasosDados;
 	// Contador de pasos sin moverse.
 	private int pasosNoMovidos;
-	// Nº máximo de pasos que puede estar una célula sin moverse antes de morir.
+	// Num maximo de pasos que puede estar una celula sin moverse antes de morir.
 	public final int MAX_PASOS_SIN_MOVER = 3;
-	// Nº de pasos que debe dar una celula para reproducirse.
+	// Num de pasos que debe dar una celula para reproducirse.
 	public final int PASOS_REPRODUCCION = 2;
 
 	/**
@@ -40,7 +40,7 @@ public class CelulaSimple implements Celula {
 	 * 
 	 * @return true si le toca reproducirse.
 	 */
-	public boolean incPasDad() { // Pasos reproducción
+	public boolean incPasDad() { // Pasos reproduccion
 		pasosDados++;
 		if (pasosDados % PASOS_REPRODUCCION == 0)
 			return true;
@@ -144,4 +144,8 @@ public class CelulaSimple implements Celula {
 		}
 	}
 
+	@Override
+	public boolean esComestible(){
+	return true;
+	}
 }

@@ -30,7 +30,9 @@ public class CrearCelula implements Comando {
 	}
 
 	@Override
-	public void ejecuta(Controlador controlador) throws PosicionNoValida, SeleccionNoValida {
+	public void ejecuta(Controlador controlador) throws PosicionNoValida, SeleccionNoValida, IndicesFueraDeRango {
+		
+		
 		controlador.creaCelula(f, c);
 	}
 

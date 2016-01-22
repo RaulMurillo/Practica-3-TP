@@ -48,7 +48,7 @@ abstract public class Mundo {
 		this.columnas = columnas;
 		this.superficie = new Superficie(filas, columnas);
 	}
-
+	
 	/**
 	 * Inicializa un mundo del tipo correspondiente según el valor de los
 	 * argumentos.
@@ -143,34 +143,21 @@ abstract public class Mundo {
 	 * @param salida
 	 *            Flujo de escritura.
 	 */
-	public void guardar(PrintWriter salida) {
-		// Para evitar dos implementaciones concretas que solo difieren en una
-		// instruccion, se ha optado por implementar este metodo de forma
-		// abstracta, haciendo distincion de casos para los tipos de mundo.
-		if (this instanceof MundoSimple)
-			salida.println("simple");
-		else
-			salida.println("complejo");
-		salida.println(filas);
-		salida.println(columnas);
-		for (int i = 0; i < filas; i++) {
-			for (int j = 0; j < columnas; j++) {
-				Casilla casilla = new Casilla(i, j);
-				if (!superficie.vacia(casilla)) {
-					salida.print(i + " " + j + " ");
-					superficie.guardarCelula(salida, i, j);
-				}
-			}
-		}
-	}
+	public abstract void guardar(PrintWriter salida);
 
 	/**
-	 * Dado un flujo de lectura, se carga la información de un mundo.
+	 * Dado un flujo de lectura, se carga la informacion de un mundo.
 	 * 
 	 * @param entrada
 	 *            Flujo de lectura.
 	 * @throws PalabraIncorrecta
 	 */
 	public abstract void cargar(Scanner entrada) throws PalabraIncorrecta;
+	
+	/**
+	 * Indica si un mundo es simple.
+	 * @return true si es simple.
+	 */
+	public abstract boolean esSimple();
 
 }

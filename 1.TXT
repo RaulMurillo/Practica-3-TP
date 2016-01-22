@@ -1,17 +1,6 @@
 simple
-5
-5
-0 0 complejo 1
-0 1 simple 1 1
-0 2 simple 7 1
-0 3 simple 3 1
-1 0 simple 1 1
-1 1 simple 7 0
-1 2 simple 1 0
-1 4 simple 1 0
-2 2 simple 3 1
-2 3 simple 3 0
-2 4 simple 3 0
-3 0 simple 1 0
-3 3 simple 1 0
-4 2 simple 5 0
+3
+3
+0 0 simple 0 0
+0 1 simple 0 0
+0 2 simple 0 0

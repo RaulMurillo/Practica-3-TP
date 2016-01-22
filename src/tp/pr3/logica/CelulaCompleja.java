@@ -101,5 +101,10 @@ public class CelulaCompleja implements Celula {
 			throw new PalabraIncorrecta();
 		}
 	}
+	
+	@Override
+	public boolean esComestible(){
+	return false;
+	}
 
 }

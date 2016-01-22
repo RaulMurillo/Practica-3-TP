@@ -30,7 +30,7 @@ public class EliminarCelula implements Comando {
 	}
 
 	@Override
-	public void ejecuta(Controlador controlador) throws PosicionNoValida {
+	public void ejecuta(Controlador controlador) throws PosicionNoValida, IndicesFueraDeRango {
 		controlador.eliminaCelula(f, c);
 	}
 

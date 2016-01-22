@@ -17,14 +17,14 @@ public class Casilla {
 	/**
 	 * Crea una casilla nueva a partir de las coordenadas dadas.
 	 * 
-	 * @param x
-	 *            Coordenada horizontal de la casilla.
-	 * @param y
+	 * @param f
 	 *            Coordenada vertical de la casilla.
+	 * @param c
+	 *            Coordenada horizontal de la casilla.
 	 */
-	public Casilla(int x, int y) {
-		this.f = x;
-		this.c = y;
+	public Casilla(int f, int c) {
+		this.f = f;
+		this.c = c;
 	}
 
 	/**

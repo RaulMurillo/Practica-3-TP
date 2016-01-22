@@ -1,5 +1,6 @@
 package tp.pr3.logica;
 
+import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -15,7 +16,7 @@ import tp.pr3.control.PalabraIncorrecta;
  *
  */
 public class MundoComplejo extends Mundo {
-	// Nº de células complejas con las que se inicia la superficie.
+	// Num de celulas complejas con las que se inicia la superficie.
 	private int numComplejas;
 
 	/**
@@ -32,7 +33,8 @@ public class MundoComplejo extends Mundo {
 	 *            Numero de celulas complejas que tendra al cominezo la
 	 *            superficie del mundo.
 	 */
-	public MundoComplejo(int filas, int columnas, int numSimples, int numComplejas) {
+	public MundoComplejo(int filas, int columnas, int numSimples,
+			int numComplejas) {
 		super(filas, columnas);
 		this.numSimples = numSimples;
 		this.numComplejas = numComplejas;
@@ -99,6 +101,23 @@ public class MundoComplejo extends Mundo {
 	}
 
 	@Override
+	public void guardar(PrintWriter salida) {
+		salida.println("complejo");
+		salida.println(filas);
+		salida.println(columnas);
+		for (int i = 0; i < filas; i++) {
+			for (int j = 0; j < columnas; j++) {
+				Casilla casilla = new Casilla(i, j);
+				if (!superficie.vacia(casilla)) {
+					salida.print(i + " " + j + " ");
+					superficie.guardarCelula(salida, i, j);
+				}
+			}
+		}
+
+	}
+
+	@Override
 	public void cargar(Scanner entrada) throws PalabraIncorrecta {
 		String s;
 		try {
@@ -123,4 +142,10 @@ public class MundoComplejo extends Mundo {
 		} catch (NoSuchElementException e) {
 		} // Fin de archivo.
 	}
+
+	@Override
+	public boolean esSimple() {
+		return false;
+	}
+
 }

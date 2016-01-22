@@ -153,7 +153,7 @@ public class Superficie {
 	 * @return true si la celula de la casilla es comestible.
 	 */
 	public boolean esComestible(Casilla casilla) {
-		return superficie[casilla.getFila()][casilla.getColumna()] instanceof CelulaSimple;
+		return superficie[casilla.getFila()][casilla.getColumna()].esComestible();
 	}
 
 	/**
